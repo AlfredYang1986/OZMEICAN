@@ -23,10 +23,10 @@
 </header>
 
 <div id="content" style="width: 1024px; height: 768px; margin: 0px auto; border: 1px solid blue;">
-    <div id="label" class="pull-left" style="position: relative; top: 100px; left: 0px; width: 31px; height: 100px; border-bottom: 1px solid red; border-top: 1px solid red; border-left: 1px solid red">
-    </div>
     <div id="level0" style="height: 100%">
-        <div class="leftPane pull-left" style="width: 50%; height: 100%; border: 1px solid red">
+        <div class="leftPane pull-left" style="position: relative; width: 50%; height: 100%; border: 1px solid red">
+            <div class="label pull-left" style="position: absolute; top: 100px; left: 0px; width: 25px; height: 100px; border-bottom: 1px solid red; border-top: 1px solid red; border-left: 1px solid red">
+            </div>
             <div class="leftCover" style="margin-left: 25px; height: 100%; border: 1px solid red">
                 <div class="leftPage" style="margin: 5px 0px 5px 20px; border: 1px solid #808080">
                     <div class="leftContent">
@@ -49,21 +49,32 @@
                         </div>
                         <div class="cityNav" style="height: 40px; border: 1px solid red">
                         </div>
-                        <div class="cities">
+                        <div class="cities" style="border: 1px solid black">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue">
-
+        <div class="rightPane pull-right" style="width: 50%; height: 100%; border: 1px solid blue; position: relative">
+            <div class="rightCover" style="margin-right: 25px; height: 100%; border: 1px solid red">
+                <div class="rightPage" style="margin: 5px 20px 5px 0px; border: 1px solid #808080">
+                    <div class="rightContent">
+                        <button class="btn btn-lg pull-right changePage">翻页</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="level1" class="hidden" style="height: 100%"> 
-        <div class="leftPane pull-left" style="width: 50%; height: 100%; border: 1px solid red">
-            <div class="leftCover" style="margin-left: 20px; border: 1px solid red">
-                <div class="leftPage" style="margin: 5px 0px 5px 5px; border: 1px solid #808080">
+    <div id="level1" style="height: 100%; display: none"> 
+        <div class="leftPane pull-left" style="position: relative; width: 50%; height: 100%; border: 1px solid red">
+            <div class="label pull-left" style="position: absolute; top: 100px; left: 0px; width: 25px; height: 100px; border-bottom: 1px solid red; border-top: 1px solid red; border-left: 1px solid red">
+            </div>
+            <div class="leftCover" style="margin-left: 25px; height: 100%; border: 1px solid red">
+                <div class="leftPage" style="margin: 5px 0px 5px 20px; border: 1px solid #808080">
+                    <div class="leftContent">
+                        <button class="btn btn-lg pull-left changePage">翻页</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,13 +88,40 @@
     <!-- Latest compiled and minified JavaScript -->
     @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>*@
     <script src="~/Content/Bootstrap/js/bootstrap.js"></script>
+    <script src="~/Scripts/CityNav/CityNav.js"></script>
 
     <script type="text/javascript">
+        var nv = new CityNav(dataCallback);
         $(function(){
-            var h = $('.leftCover').height();
-            $('.leftPage').css("height", (h - 10) + "px");
+            var h_l = $('.leftCover').height();
+            $('.leftPage').css("height", (h_l - 10) + "px");
 
+            var h_r = $('.rightCover').height();
+            $('.rightPage').css("height", (h_r - 10) + "px");
 
+            var city_p_h = $('.leftPage').height();
+            $('.cities').css("height", (city_p_h - 40 - 80) + "px");
+
+            $('.changePage').click(function () {
+                var bHidden = $('#level0').css("display") == "none"
+                if (bHidden) {
+                    $('#level1').hide();
+                    $('#level0').show();
+                } else {
+                    $('#level0').hide();
+                    $('#level1').show();
+                }
+            });
         });
+
+        function dataCallback() {
+            alert(nv.getProvencesCount());
+            alert(nv.getCitiesCountByProvence("provence7"));
+            alert(nv.getDistrectCountByProAndCity("provence7", "city8"));
+
+            alert(nv.getProvencesArray());
+            alert(nv.getCitiesArrayByProvence("provence5"));
+            alert(nv.getDistrectArrayByProAndCity("provence3", "city4"));
+        }
     </script>
 }
