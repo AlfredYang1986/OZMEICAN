@@ -13,10 +13,10 @@
 
 <header style="height: 46px; width: 100%; border: 1px solid red">
     <div id="login" style="width: 1024px; height: 100%; margin: 0px auto; border: 1px solid green">
-        <button class="pull-right" type="button" class="btn btn-lg" aria-label="Left Align">
+        <button type="button" class="btn btn-lg pull-right" aria-label="Left Align">
             <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
         </button>
-        <button class="pull-right" type="button" class="btn btn-lg" aria-label="Left Align">
+        <button type="button" class="btn btn-lg pull-right" aria-label="Left Align">
             <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
         </button>
     </div>
@@ -91,14 +91,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="rtList" class="listArea" style="border: 1px solid black">
+                        <div id="rtList" class="listArea" style="margin: 5px; border: 1px solid #808080">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue">
-
+            <div id="dishList" style="margin: 5px">
+            </div>
         </div>
     </div>
 </div>
@@ -132,6 +133,8 @@
                 } else {
                     $('#level0').hide();
                     $('#level1').show();
+                    rt.createRTContent();
+                    rt.createDishContent();
                 }
             });
         });
