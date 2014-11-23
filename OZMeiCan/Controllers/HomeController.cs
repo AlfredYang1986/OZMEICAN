@@ -10,6 +10,32 @@ namespace OZMeiCan.Controllers
 {
     public class HomeController : Controller
     {
+        public JsonResult getRTContent(String cor)
+        {
+            JArray reVal = new JArray();
+            for (int index = 0; index < 9; ++index)
+            {
+                dynamic tmp = new JObject();
+                tmp.name = String.Format(@"rest{0}", index);
+                reVal.Add(tmp);
+            }
+
+            return Json(JsonConvert.SerializeObject(reVal), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getDishContent(String name, String cor)
+        {
+            JArray reVal = new JArray();
+            for (int index = 0; index < 9; ++index)
+            {
+                dynamic tmp = new JObject();
+                tmp.name = String.Format(@"dish{0}", index);
+                reVal.Add(tmp);
+            }
+
+            return Json(JsonConvert.SerializeObject(reVal), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult getJsonData()
         {
             JArray provences = new JArray();
@@ -32,6 +58,16 @@ namespace OZMeiCan.Controllers
                         dynamic dis = new JObject();
                         dis.shot = @"D";
                         dis.name = String.Format("distrect{0}", index);
+
+                        JArray buildings = new JArray();
+                        for (int b_index = 0; b_index < 9; ++b_index)
+                        {
+                            dynamic building = new JObject();
+                            building.shot = @"B";
+                            building.name = String.Format(@"building{0}", b_index);
+                            buildings.Add(building);
+                        }
+                        dis.subs = buildings;
                         distrects.Add(dis);
                     }
                     city.subs = distrects;
