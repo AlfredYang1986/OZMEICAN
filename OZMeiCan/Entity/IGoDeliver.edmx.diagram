@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="36e78283a48442c298590a5c94bce6b0" Name="Diagram1">
+        <EntityTypeShape EntityType="IGoDeliverModel.Category" Width="1.5" PointX="7.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.CreditCard" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.DeliverOrderRow" Width="1.5" PointX="12" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.DeliveryOrder" Width="1.5" PointX="7.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.Dish" Width="1.5" PointX="9.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.Geolocation" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.Payment" Width="1.5" PointX="9.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.Promotion" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.Restaurant" Width="1.5" PointX="7.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.StateProvince" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.Suburb" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IGoDeliverModel.UserProfile" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Dish_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_UserProfile_CreditCard" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_DeliverOrderRow_Dish" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_DeliverOrderRow_Promotion" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_DeliveryOrder_Promotion" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Payment_DeliveryOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Dish_Restaurant" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Geolocation_Suburb" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Restaurant_Geolocation" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_UserProfile_Geolocation" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Payment_UserProfile" ManuallyRouted="false" />
+        <AssociationConnector Association="IGoDeliverModel.FK_Suburb_StateProvince" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
