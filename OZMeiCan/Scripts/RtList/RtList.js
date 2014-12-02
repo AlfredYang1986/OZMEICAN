@@ -34,8 +34,12 @@ RtList.prototype.initRTView = function () {
     $('#rtList').children().remove();
 
     $.each(this.rt, function (index, item) {
-        var element = $("<div class='rtBtn' style='width: 100%; height: 60px; border: 1px solid black'></div>").appendTo($('#rtList'));
-        element.html(item.name);
+        var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black'> \
+                            <strong class='ele-title' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</strong> \
+                            <p class='ele-dis' style='display: table-cell; vertical-align: middle;'>123</p> \
+                         </div>").appendTo($('#rtList'));
+        element.children('strong').first().html(item.name);
+        element.children('p').first().html(item.dish);
 
         element.click(function () {
             self.createDishContent("test", "test");
@@ -75,8 +79,10 @@ RtList.prototype.initDishView = function () {
     $('#dishList').children().remove();
 
     $.each(this.ds, function (index, item) {
-        var element = $("<div class='dishBtn' style='width: 100%; height: 60px; border: 1px solid black'></div>").appendTo($('#dishList'));
-        element.html(item.name);
+        var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black'> \
+                            <p class='ele-title' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
+                         </div>").appendTo($('#dishList'));
+        element.children('p').first().html(item.name);
 
         element.click(function () {
             alert("dish click");

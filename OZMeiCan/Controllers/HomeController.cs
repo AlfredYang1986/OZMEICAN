@@ -17,6 +17,7 @@ namespace OZMeiCan.Controllers
             {
                 dynamic tmp = new JObject();
                 tmp.name = String.Format(@"rest{0}", index);
+                tmp.dish = String.Format(@"dish1, dish2, dish3");
                 reVal.Add(tmp);
             }
 

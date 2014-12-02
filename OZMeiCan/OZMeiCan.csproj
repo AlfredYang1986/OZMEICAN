@@ -313,6 +313,7 @@
       <LastGenOutput>IGoDeliver.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Images\naked.jpg" />
     <Content Include="Scripts\CityNav\CityNav.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />

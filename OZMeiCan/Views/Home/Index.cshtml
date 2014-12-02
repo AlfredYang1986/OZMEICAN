@@ -64,7 +64,19 @@
             <div class="rightCover" style="margin-right: 25px; height: 100%; border: 1px solid red">
                 <div class="rightPage" style="margin: 5px 20px 5px 0px; border: 1px solid #808080">
                     <div class="rightContent">
-                        <button class="btn btn-lg pull-right changePage">翻页</button>
+                        <button class="btn btn-lg changePage" style="position: absolute; top: 20px; right: 50px; width: 50px; padding: 10px 8px">翻页</button>
+                        <div style="margin: 30px auto; width: 70%; height: 250px; border: 1px solid #808080">
+                            <img style="width: 100%; height: 100%" src="~/Images/naked.jpg" />
+                        </div>
+                        <div style="display: table; width: 60%; margin: 0 auto; border: 1px solid red">
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
+                        </div>                         
                     </div>
                 </div>
             </div>
@@ -79,7 +91,7 @@
                 <div class="leftPage" style="margin: 5px 0px 5px 20px; border: 1px solid #808080">
                     <div class="leftContent">
                         <div class="hearder" style="height: 120px; border: 1px solid blue">
-                            <button class="btn btn-lg pull-left changePage" style="margin-left: 5px; margin-top: 5px">翻页</button>
+                            <button class="btn btn-lg pull-left changePage" style="margin-left: 5px; margin-top: 5px; padding: 10px 8px; width: 50px">翻页</button>
                             <div>
                                 <div class="input-group" style="margin-top: 15px; margin-left: 15px; margin-right: 15px; padding-left: 20px">
                                     <span class="input-group-btn">
@@ -91,19 +103,35 @@
                                 </div><!-- /input-group -->
 
                                 <div class="btn-group" role="group" aria-label="..." style="width: 60%; margin: 5px auto; padding-left: 50px">
-                                    <button type="button" class="btn btn-default">地图</button>
-                                    <button type="button" class="btn btn-default">列表</button>
+                                    <button id="mapBtn" type="button" class="btn btn-default">地图</button>
+                                    <button id="listBtn" type="button" class="btn btn-default">列表</button>
                                 </div>
                             </div>
                         </div>
-                        <div id="rtList" class="listArea" style="margin: 5px; border: 1px solid #808080">
+                        <div id="rtContainer" class="listArea">
+                            <div style ="height: 40px; display: table">
+                                <h2 style="margin: 5px; float: left">快捷订餐</h2>
+                                <p style="vertical-align: middle; display: table-cell">几秒完成订单</p>
+                            </div>
+                            <div class="btn-group" role="group" aria-label="..." style="width: 100%; height: 20px">
+                                <button type="button" class="btn btn-default" style="width: 33.3%; height: 20px; font-size: 0.7em">在线支付</button>
+                                <button type="button" class="btn btn-default" style="width: 33.3%; height: 20px; font-size: 0.7em">优惠活动</button>
+                                <button type="button" class="btn btn-default" style="width: 33.3%; height: 20px; font-size: 0.7em">VIP特权</button>
+                            </div>
+                            <div id="rtList" style="margin: 5px; border: 1px solid #808080; overflow:auto">
+                            </div>
+                        </div>
+                        <div id="restMap" style="display: none">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue">
-            <div id="dishList" style="margin: 5px">
+        <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue; overflow:auto">
+            <div style="margin: 30px auto; width: 70%; height: 250px; border: 1px solid #808080">
+                <img style="width: 100%; height: 100%" src="~/Images/naked.jpg" />
+            </div>
+            <div id="dishList" style="margin: 5px;">
             </div>
         </div>
     </div>
@@ -141,6 +169,40 @@
                     rt.createRTContent();
                     rt.createDishContent();
                 }
+            });
+
+            /**
+             * level 1 show list
+             */
+            $('#listBtn').click(function () {
+                $('#restMap').hide();
+                $('#rtContainer').show();
+            });
+
+            /**
+             * level 1 show map
+             */
+            $('#mapBtn').click(function () {
+                var w = $('#rtContainer').width();
+                var h = $('#rtContainer').height();
+                $('#rtContainer').hide();
+                $('#restMap').show();
+                $('#restMap').css({ "width": w + "px", "height": h + "px" });
+
+                var mapProp = {
+                    center: new google.maps.LatLng(51.508742, -0.120850),
+                    zoom: 7,
+                    panControl: true,
+                    zoomControl: true,
+                    mapTypeControl: true,
+                    scaleControl: true,
+                    streetViewControl: true,
+                    overviewMapControl: true,
+                    rotateControl: true,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("restMap")
+                  , mapProp);
             });
         });
 
