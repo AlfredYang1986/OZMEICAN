@@ -19,11 +19,33 @@
         <button type="button" class="btn btn-lg pull-right" aria-label="Left Align">
             <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
         </button>
-        <button type="button" class="btn btn-lg pull-right" aria-label="Left Align">
+        <button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="Left Align">
             <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
         </button>
     </div>
 </header>
+
+<div id="shoppingList" style="width: 1024px; height: 768px; margin: 0px auto; border: 1px solid red;">
+    <div style="text-align: center; vertical-align: middle">
+        <div class="shoppingHeader">
+            <button class="btn btn-lg" id="shoppingBack">GO BACK</button>
+        </div>
+        <div class="shoppingContent">
+            <table style="border: 1px solid #c6baba" border="1" cellspacing="0" cellpadding="0" width="100%">
+            	<tr style="border: 1px solid #c6baba">
+            		<td style="border: 1px solid #c6baba">已点菜品</td>
+            		<td style="border: 1px solid #c6baba">所属餐馆</td>
+            		<td style="border: 1px solid #c6baba">价格</td>
+            		<td style="border: 1px solid #c6baba">份数</td>
+            		<td style="border: 1px solid #c6baba">积分</td>
+            	</tr>
+            </table>
+
+            <span class="pull-right"><p>运费</p></span>
+            <span class="pull-right"><p>总价</p></span>
+        </div>
+    </div>
+</div>
 
 <div id="content" style="width: 1024px; height: 768px; margin: 0px auto; border: 1px solid blue;">
     <div id="level0" style="height: 100%">
@@ -204,6 +226,12 @@
                 var map = new google.maps.Map(document.getElementById("restMap")
                   , mapProp);
             });
+
+            $('#shoppingBtn').click(function () {
+                $('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
+                $("#shoppingList").slideDown();
+                $("#content").slideUp();
+            });            $('#shoppingBack').click(function () {                $('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });                $("#shoppingList").slideUp();                $("#content").slideDown();            });
         });
 
         function dataCallback() {
