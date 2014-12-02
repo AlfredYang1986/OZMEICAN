@@ -25,7 +25,7 @@
     </div>
 </header>
 
-<div id="shoppingList" style="width: 1024px; height: 768px; margin: 0px auto; border: 1px solid red;">
+<div id="shoppingList" style="width: 1024px; height: 768px; margin: 0px auto; border: 1px solid red; display: none">
     <div style="text-align: center; vertical-align: middle">
         <div class="shoppingHeader">
             <button class="btn btn-lg" id="shoppingBack">GO BACK</button>
@@ -228,10 +228,10 @@
             });
 
             $('#shoppingBtn').click(function () {
-                $('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
+                //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
                 $("#shoppingList").slideDown();
                 $("#content").slideUp();
-            });            $('#shoppingBack').click(function () {                $('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });                $("#shoppingList").slideUp();                $("#content").slideDown();            });
+            });            $('#shoppingBack').click(function () {                //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });                $("#shoppingList").slideUp();                $("#content").slideDown();            });
         });
 
         function dataCallback() {
