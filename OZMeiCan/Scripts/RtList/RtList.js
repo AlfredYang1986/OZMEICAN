@@ -1,6 +1,6 @@
 ﻿
 function RtList() {
-
+    this.curSub = "";
 }
 
 RtList.prototype.createRTContent = function () {
@@ -10,7 +10,7 @@ RtList.prototype.createRTContent = function () {
         url: '/Home/getRTContent',
         dataType: 'json',
         contentType: 'application/json, charset=utf-8',
-        data: { "cor": "AlfredTest" },
+        data: { "cor": this.curSub },
         cache: false,
         //beforeSend: function () {
         //    Loading();

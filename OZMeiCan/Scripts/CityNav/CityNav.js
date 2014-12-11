@@ -190,42 +190,45 @@ CityNav.prototype.createListButton = function (array, level) {
         element.click(function () {
             var tmp = this;
 
-            if (parseInt(element.attr('data-level')) != 4) {
+            //if (parseInt(element.attr('data-level')) != 4) {
+            if (parseInt(element.attr('data-level')) != 2) {
                 self.createNavButton(tmp.textContent, level);
                 self.listAllBtns();
             } else {
-                /**
-                 * 5. 跳到地图
-                 */
-                var w = $('#cityNav').width();
-                var hNav = $('#cityNav').height();
-                var hCon = $('#cities').height();
-                $('#cityNav').hide();
-                $('#cities').hide();
-                $('#cityMap').show();
-                $('#cityMap').css({ "width": w + "px", "height": hNav + hCon + "px" });
+                $('.changePage').first().click();
 
-                //var map = new BMap.Map("cityMap");    // 创建Map实例
-                //map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
-                //map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
-                //map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
-                //map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+            //    /**
+            //     * 5. 跳到地图
+            //     */
+            //    var w = $('#cityNav').width();
+            //    var hNav = $('#cityNav').height();
+            //    var hCon = $('#cities').height();
+            //    $('#cityNav').hide();
+            //    $('#cities').hide();
+            //    $('#cityMap').show();
+            //    $('#cityMap').css({ "width": w + "px", "height": hNav + hCon + "px" });
 
-                var mapProp = {
-                    center: new google.maps.LatLng(51.508742, -0.120850),
-                    zoom: 7,
-                    panControl: true,
-                    zoomControl: true,
-                    mapTypeControl: true,
-                    scaleControl: true,
-                    streetViewControl: true,
-                    overviewMapControl: true,
-                    rotateControl: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(document.getElementById("cityMap")
-                  , mapProp);
-            }
+            //    //var map = new BMap.Map("cityMap");    // 创建Map实例
+            //    //map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+            //    //map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+            //    //map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+            //    //map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+            //    var mapProp = {
+            //        center: new google.maps.LatLng(51.508742, -0.120850),
+            //        zoom: 7,
+            //        panControl: true,
+            //        zoomControl: true,
+            //        mapTypeControl: true,
+            //        scaleControl: true,
+            //        streetViewControl: true,
+            //        overviewMapControl: true,
+            //        rotateControl: true,
+            //        mapTypeId: google.maps.MapTypeId.ROADMAP
+            //    };
+            //    var map = new google.maps.Map(document.getElementById("cityMap")
+                //      , mapProp);
+                }
         });
     });
 }

@@ -21,7 +21,6 @@ namespace OZMeiCan.Entity
     
         public int UserId { get; set; }
         public string UserName { get; set; }
-        public byte[] Email { get; set; }
         public string Phone { get; set; }
         public Nullable<int> LocId { get; set; }
         public string PaypalAcount { get; set; }

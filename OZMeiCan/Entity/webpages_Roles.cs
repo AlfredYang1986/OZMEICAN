@@ -12,12 +12,16 @@ namespace OZMeiCan.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class webpages_Roles
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public webpages_Roles()
+        {
+            this.webpages_UsersInRoles = new HashSet<webpages_UsersInRoles>();
+        }
+    
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+    
+        public virtual ICollection<webpages_UsersInRoles> webpages_UsersInRoles { get; set; }
     }
 }

@@ -11,20 +11,20 @@
           <EntitySet Name="DeliverOrderRow" EntityType="IGoDeliverModel.Store.DeliverOrderRow" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="DeliveryOrder" EntityType="IGoDeliverModel.Store.DeliveryOrder" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Dish" EntityType="IGoDeliverModel.Store.Dish" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DishCategory" EntityType="IGoDeliverModel.Store.DishCategory" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Geolocation" EntityType="IGoDeliverModel.Store.Geolocation" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Payment" EntityType="IGoDeliverModel.Store.Payment" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Promotion" EntityType="IGoDeliverModel.Store.Promotion" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Restaurant" EntityType="IGoDeliverModel.Store.Restaurant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="StateProvince" EntityType="IGoDeliverModel.Store.StateProvince" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Suburb" EntityType="IGoDeliverModel.Store.Suburb" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="sysdiagrams" EntityType="IGoDeliverModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserProfile" EntityType="IGoDeliverModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_Membership" EntityType="IGoDeliverModel.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="IGoDeliverModel.Store.webpages_OAuthMembership" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_Roles" EntityType="IGoDeliverModel.Store.webpages_Roles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="IGoDeliverModel.Store.webpages_UsersInRoles" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_DeliverOrderRow_DeliveryOrder" Association="IGoDeliverModel.Store.FK_DeliverOrderRow_DeliveryOrder">
             <End Role="DeliveryOrder" EntitySet="DeliveryOrder" />
-            <End Role="DeliverOrderRow" EntitySet="DeliverOrderRow" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DeliverOrderRow_Dish" Association="IGoDeliverModel.Store.FK_DeliverOrderRow_Dish">
-            <End Role="Dish" EntitySet="Dish" />
             <End Role="DeliverOrderRow" EntitySet="DeliverOrderRow" />
           </AssociationSet>
           <AssociationSet Name="FK_DeliverOrderRow_Promotion" Association="IGoDeliverModel.Store.FK_DeliverOrderRow_Promotion">
@@ -35,13 +35,13 @@
             <End Role="Promotion" EntitySet="Promotion" />
             <End Role="DeliveryOrder" EntitySet="DeliveryOrder" />
           </AssociationSet>
-          <AssociationSet Name="FK_Dish_Category" Association="IGoDeliverModel.Store.FK_Dish_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Dish" EntitySet="Dish" />
-          </AssociationSet>
           <AssociationSet Name="FK_Dish_Restaurant" Association="IGoDeliverModel.Store.FK_Dish_Restaurant">
             <End Role="Restaurant" EntitySet="Restaurant" />
             <End Role="Dish" EntitySet="Dish" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishCategory_Category" Association="IGoDeliverModel.Store.FK_DishCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="DishCategory" EntitySet="DishCategory" />
           </AssociationSet>
           <AssociationSet Name="FK_Geolocation_Suburb" Association="IGoDeliverModel.Store.FK_Geolocation_Suburb">
             <End Role="Suburb" EntitySet="Suburb" />
@@ -58,6 +58,10 @@
           <AssociationSet Name="FK_Restaurant_Geolocation" Association="IGoDeliverModel.Store.FK_Restaurant_Geolocation">
             <End Role="Geolocation" EntitySet="Geolocation" />
             <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RoleId" Association="IGoDeliverModel.Store.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_Suburb_StateProvince" Association="IGoDeliverModel.Store.FK_Suburb_StateProvince">
             <End Role="StateProvince" EntitySet="StateProvince" />
@@ -76,15 +80,16 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ParentCategoryId" Type="int" />
         </EntityType>
         <EntityType Name="CreditCard">
           <Key>
             <PropertyRef Name="CreditCardID" />
           </Key>
-          <Property Name="CreditCardID" Type="int" Nullable="false" />
-          <Property Name="CardType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CreditCardID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CardType" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="CardNumber" Type="nvarchar" Nullable="false" MaxLength="25" />
           <Property Name="ExpMonth" Type="tinyint" Nullable="false" />
           <Property Name="ExpYear" Type="smallint" Nullable="false" />
@@ -99,39 +104,51 @@
           <Property Name="SubTotal" Type="float" Nullable="false" />
           <Property Name="PromoId" Type="int" />
           <Property Name="Distance" Type="float" Nullable="false" />
+          <Property Name="DeliveryCost" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="DeliveryOrder">
           <Key>
             <PropertyRef Name="OrderId" />
           </Key>
-          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="PriceTotal" Type="float" Nullable="false" />
           <Property Name="OrderDateTime" Type="datetime" />
           <Property Name="Status" Type="char" MaxLength="1" />
           <Property Name="PromoId" Type="int" />
           <Property Name="OrderRef" Type="nchar" MaxLength="10" />
+          <Property Name="DeliveryCost" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Dish">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="150" />
-          <Property Name="Price" Type="float" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
-          <Property Name="CategoryId" Type="int" />
           <Property Name="Spiciness" Type="int" />
           <Property Name="RestaurantId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DishCategory">
+          <Key>
+            <PropertyRef Name="DishId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="DishId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Geolocation">
           <Key>
             <PropertyRef Name="LocId" />
           </Key>
-          <Property Name="LocId" Type="int" Nullable="false" />
-          <Property Name="Suburb" Type="int" />
-          <Property Name="Altitude" Type="float" Nullable="false" />
-          <Property Name="Latitude" Type="float" Nullable="false" />
+          <Property Name="LocId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SuburbId" Type="int" Nullable="false" />
+          <Property Name="Altitude" Type="float" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Street" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="StreetNo" Type="int" Nullable="false" />
+          <Property Name="UnitNo" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -139,7 +156,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="Method" Type="int" />
-          <Property Name="Amount" Type="float" />
+          <Property Name="Amount" Type="float" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
@@ -147,9 +164,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Percentage" Type="int" />
           <Property Name="Amount" Type="int" />
           <Property Name="Code" Type="nchar" MaxLength="10" />
@@ -160,15 +177,18 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantName" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="LocId" Type="int" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="StateProvince">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="nchar" Nullable="false" MaxLength="3" />
           <Property Name="CountryRegionCode" Type="nvarchar" Nullable="false" MaxLength="3" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
@@ -177,31 +197,60 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="StateProvince" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="Email" Type="varbinary" Nullable="false" MaxLength="150" />
-          <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="15" />
           <Property Name="LocId" Type="int" />
-          <Property Name="PaypalAcount" Type="nchar" MaxLength="10" />
+          <Property Name="PaypalAcount" Type="nvarchar" MaxLength="50" />
           <Property Name="CreditCardId" Type="int" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="ProviderUserId" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_DeliverOrderRow_DeliveryOrder">
           <End Role="DeliveryOrder" Type="IGoDeliverModel.Store.DeliveryOrder" Multiplicity="1" />
@@ -212,18 +261,6 @@
             </Principal>
             <Dependent Role="DeliverOrderRow">
               <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DeliverOrderRow_Dish">
-          <End Role="Dish" Type="IGoDeliverModel.Store.Dish" Multiplicity="1" />
-          <End Role="DeliverOrderRow" Type="IGoDeliverModel.Store.DeliverOrderRow" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dish">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DeliverOrderRow">
-              <PropertyRef Name="DishId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -251,18 +288,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Dish_Category">
-          <End Role="Category" Type="IGoDeliverModel.Store.Category" Multiplicity="0..1" />
-          <End Role="Dish" Type="IGoDeliverModel.Store.Dish" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Dish">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Dish_Restaurant">
           <End Role="Restaurant" Type="IGoDeliverModel.Store.Restaurant" Multiplicity="1" />
           <End Role="Dish" Type="IGoDeliverModel.Store.Dish" Multiplicity="*" />
@@ -275,15 +300,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DishCategory_Category">
+          <End Role="Category" Type="IGoDeliverModel.Store.Category" Multiplicity="1" />
+          <End Role="DishCategory" Type="IGoDeliverModel.Store.DishCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DishCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Geolocation_Suburb">
-          <End Role="Suburb" Type="IGoDeliverModel.Store.Suburb" Multiplicity="0..1" />
+          <End Role="Suburb" Type="IGoDeliverModel.Store.Suburb" Multiplicity="1" />
           <End Role="Geolocation" Type="IGoDeliverModel.Store.Geolocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Suburb">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Geolocation">
-              <PropertyRef Name="Suburb" />
+              <PropertyRef Name="SuburbId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -320,6 +357,18 @@
             </Principal>
             <Dependent Role="Restaurant">
               <PropertyRef Name="LocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="IGoDeliverModel.Store.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="IGoDeliverModel.Store.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -370,17 +419,21 @@
           <EntitySet Name="DeliverOrderRow" EntityType="IGoDeliverModel.DeliverOrderRow" />
           <EntitySet Name="DeliveryOrder" EntityType="IGoDeliverModel.DeliveryOrder" />
           <EntitySet Name="Dish" EntityType="IGoDeliverModel.Dish" />
+          <EntitySet Name="DishCategory" EntityType="IGoDeliverModel.DishCategory" />
           <EntitySet Name="Geolocation" EntityType="IGoDeliverModel.Geolocation" />
           <EntitySet Name="Payment" EntityType="IGoDeliverModel.Payment" />
           <EntitySet Name="Promotion" EntityType="IGoDeliverModel.Promotion" />
           <EntitySet Name="Restaurant" EntityType="IGoDeliverModel.Restaurant" />
           <EntitySet Name="StateProvince" EntityType="IGoDeliverModel.StateProvince" />
           <EntitySet Name="Suburb" EntityType="IGoDeliverModel.Suburb" />
-          <EntitySet Name="sysdiagrams" EntityType="IGoDeliverModel.sysdiagrams" />
           <EntitySet Name="UserProfile" EntityType="IGoDeliverModel.UserProfile" />
-          <AssociationSet Name="FK_Dish_Category" Association="IGoDeliverModel.FK_Dish_Category">
+          <EntitySet Name="webpages_Membership" EntityType="IGoDeliverModel.webpages_Membership" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="IGoDeliverModel.webpages_OAuthMembership" />
+          <EntitySet Name="webpages_Roles" EntityType="IGoDeliverModel.webpages_Roles" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="IGoDeliverModel.webpages_UsersInRoles" />
+          <AssociationSet Name="FK_DishCategory_Category" Association="IGoDeliverModel.FK_DishCategory_Category">
             <End Role="Category" EntitySet="Category" />
-            <End Role="Dish" EntitySet="Dish" />
+            <End Role="DishCategory" EntitySet="DishCategory" />
           </AssociationSet>
           <AssociationSet Name="FK_UserProfile_CreditCard" Association="IGoDeliverModel.FK_UserProfile_CreditCard">
             <End Role="CreditCard" EntitySet="CreditCard" />
@@ -388,10 +441,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_DeliverOrderRow_DeliveryOrder" Association="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder">
             <End Role="DeliveryOrder" EntitySet="DeliveryOrder" />
-            <End Role="DeliverOrderRow" EntitySet="DeliverOrderRow" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DeliverOrderRow_Dish" Association="IGoDeliverModel.FK_DeliverOrderRow_Dish">
-            <End Role="Dish" EntitySet="Dish" />
             <End Role="DeliverOrderRow" EntitySet="DeliverOrderRow" />
           </AssociationSet>
           <AssociationSet Name="FK_DeliverOrderRow_Promotion" Association="IGoDeliverModel.FK_DeliverOrderRow_Promotion">
@@ -430,21 +479,26 @@
             <End Role="StateProvince" EntitySet="StateProvince" />
             <End Role="Suburb" EntitySet="Suburb" />
           </AssociationSet>
+          <AssociationSet Name="fk_RoleId" Association="IGoDeliverModel.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="Dish" Relationship="IGoDeliverModel.FK_Dish_Category" FromRole="Category" ToRole="Dish" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ParentCategoryId" Type="Int32" />
+          <NavigationProperty Name="DishCategory" Relationship="IGoDeliverModel.FK_DishCategory_Category" FromRole="Category" ToRole="DishCategory" />
         </EntityType>
         <EntityType Name="CreditCard">
           <Key>
             <PropertyRef Name="CreditCardID" />
           </Key>
-          <Property Name="CreditCardID" Type="Int32" Nullable="false" />
-          <Property Name="CardType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CreditCardID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CardType" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="CardNumber" Type="String" Nullable="false" MaxLength="25" Unicode="true" FixedLength="false" />
           <Property Name="ExpMonth" Type="Byte" Nullable="false" />
           <Property Name="ExpYear" Type="Int16" Nullable="false" />
@@ -460,20 +514,21 @@
           <Property Name="SubTotal" Type="Double" Nullable="false" />
           <Property Name="PromoId" Type="Int32" />
           <Property Name="Distance" Type="Double" Nullable="false" />
+          <Property Name="DeliveryCost" Type="Double" Nullable="false" />
           <NavigationProperty Name="DeliveryOrder" Relationship="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder" FromRole="DeliverOrderRow" ToRole="DeliveryOrder" />
-          <NavigationProperty Name="Dish" Relationship="IGoDeliverModel.FK_DeliverOrderRow_Dish" FromRole="DeliverOrderRow" ToRole="Dish" />
           <NavigationProperty Name="Promotion" Relationship="IGoDeliverModel.FK_DeliverOrderRow_Promotion" FromRole="DeliverOrderRow" ToRole="Promotion" />
         </EntityType>
         <EntityType Name="DeliveryOrder">
           <Key>
             <PropertyRef Name="OrderId" />
           </Key>
-          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="PriceTotal" Type="Double" Nullable="false" />
           <Property Name="OrderDateTime" Type="DateTime" Precision="3" />
           <Property Name="Status" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
           <Property Name="PromoId" Type="Int32" />
           <Property Name="OrderRef" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="DeliveryCost" Type="Double" Nullable="false" />
           <NavigationProperty Name="DeliverOrderRow" Relationship="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder" FromRole="DeliveryOrder" ToRole="DeliverOrderRow" />
           <NavigationProperty Name="Promotion" Relationship="IGoDeliverModel.FK_DeliveryOrder_Promotion" FromRole="DeliveryOrder" ToRole="Promotion" />
           <NavigationProperty Name="Payment" Relationship="IGoDeliverModel.FK_Payment_DeliveryOrder" FromRole="DeliveryOrder" ToRole="Payment" />
@@ -482,27 +537,36 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
-          <Property Name="Price" Type="Double" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <Property Name="CategoryId" Type="Int32" />
           <Property Name="Spiciness" Type="Int32" />
           <Property Name="RestaurantId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="IGoDeliverModel.FK_Dish_Category" FromRole="Dish" ToRole="Category" />
-          <NavigationProperty Name="DeliverOrderRow" Relationship="IGoDeliverModel.FK_DeliverOrderRow_Dish" FromRole="Dish" ToRole="DeliverOrderRow" />
           <NavigationProperty Name="Restaurant" Relationship="IGoDeliverModel.FK_Dish_Restaurant" FromRole="Dish" ToRole="Restaurant" />
+        </EntityType>
+        <EntityType Name="DishCategory">
+          <Key>
+            <PropertyRef Name="DishId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="DishId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="IGoDeliverModel.FK_DishCategory_Category" FromRole="DishCategory" ToRole="Category" />
         </EntityType>
         <EntityType Name="Geolocation">
           <Key>
             <PropertyRef Name="LocId" />
           </Key>
-          <Property Name="LocId" Type="Int32" Nullable="false" />
-          <Property Name="Suburb" Type="Int32" />
-          <Property Name="Altitude" Type="Double" Nullable="false" />
-          <Property Name="Latitude" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Suburb1" Relationship="IGoDeliverModel.FK_Geolocation_Suburb" FromRole="Geolocation" ToRole="Suburb" />
+          <Property Name="LocId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SuburbId" Type="Int32" Nullable="false" />
+          <Property Name="Altitude" Type="Double" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Street" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="StreetNo" Type="Int32" Nullable="false" />
+          <Property Name="UnitNo" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Suburb" Relationship="IGoDeliverModel.FK_Geolocation_Suburb" FromRole="Geolocation" ToRole="Suburb" />
           <NavigationProperty Name="Restaurant" Relationship="IGoDeliverModel.FK_Restaurant_Geolocation" FromRole="Geolocation" ToRole="Restaurant" />
           <NavigationProperty Name="UserProfile" Relationship="IGoDeliverModel.FK_UserProfile_Geolocation" FromRole="Geolocation" ToRole="UserProfile" />
         </EntityType>
@@ -512,7 +576,7 @@
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="Method" Type="Int32" />
-          <Property Name="Amount" Type="Double" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
           <Property Name="OrderId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DeliveryOrder" Relationship="IGoDeliverModel.FK_Payment_DeliveryOrder" FromRole="Payment" ToRole="DeliveryOrder" />
@@ -522,9 +586,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="Percentage" Type="Int32" />
           <Property Name="Amount" Type="Int32" />
           <Property Name="Code" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
@@ -537,9 +601,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="LocId" Type="Int32" />
+          <Property Name="ContactName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ContactPhone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Dish" Relationship="IGoDeliverModel.FK_Dish_Restaurant" FromRole="Restaurant" ToRole="Dish" />
           <NavigationProperty Name="Geolocation" Relationship="IGoDeliverModel.FK_Restaurant_Geolocation" FromRole="Restaurant" ToRole="Geolocation" />
         </EntityType>
@@ -547,7 +614,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="true" />
           <Property Name="CountryRegionCode" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
@@ -557,45 +624,76 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="StateProvince" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Geolocation" Relationship="IGoDeliverModel.FK_Geolocation_Suburb" FromRole="Suburb" ToRole="Geolocation" />
           <NavigationProperty Name="StateProvince1" Relationship="IGoDeliverModel.FK_Suburb_StateProvince" FromRole="Suburb" ToRole="StateProvince" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="Email" Type="Binary" Nullable="false" MaxLength="150" FixedLength="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
           <Property Name="LocId" Type="Int32" />
-          <Property Name="PaypalAcount" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="PaypalAcount" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="CreditCardId" Type="Int32" />
           <NavigationProperty Name="CreditCard" Relationship="IGoDeliverModel.FK_UserProfile_CreditCard" FromRole="UserProfile" ToRole="CreditCard" />
           <NavigationProperty Name="Geolocation" Relationship="IGoDeliverModel.FK_UserProfile_Geolocation" FromRole="UserProfile" ToRole="Geolocation" />
           <NavigationProperty Name="Payment" Relationship="IGoDeliverModel.FK_Payment_UserProfile" FromRole="UserProfile" ToRole="Payment" />
         </EntityType>
-        <Association Name="FK_Dish_Category">
-          <End Role="Category" Type="IGoDeliverModel.Category" Multiplicity="0..1" />
-          <End Role="Dish" Type="IGoDeliverModel.Dish" Multiplicity="*" />
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="webpages_UsersInRoles" Relationship="IGoDeliverModel.fk_RoleId" FromRole="webpages_Roles" ToRole="webpages_UsersInRoles" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="webpages_Roles" Relationship="IGoDeliverModel.fk_RoleId" FromRole="webpages_UsersInRoles" ToRole="webpages_Roles" />
+        </EntityType>
+        <Association Name="FK_DishCategory_Category">
+          <End Role="Category" Type="IGoDeliverModel.Category" Multiplicity="1" />
+          <End Role="DishCategory" Type="IGoDeliverModel.DishCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Dish">
+            <Dependent Role="DishCategory">
               <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
@@ -621,18 +719,6 @@
             </Principal>
             <Dependent Role="DeliverOrderRow">
               <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DeliverOrderRow_Dish">
-          <End Role="Dish" Type="IGoDeliverModel.Dish" Multiplicity="1" />
-          <End Role="DeliverOrderRow" Type="IGoDeliverModel.DeliverOrderRow" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dish">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DeliverOrderRow">
-              <PropertyRef Name="DishId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -685,14 +771,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Geolocation_Suburb">
-          <End Role="Suburb" Type="IGoDeliverModel.Suburb" Multiplicity="0..1" />
+          <End Role="Suburb" Type="IGoDeliverModel.Suburb" Multiplicity="1" />
           <End Role="Geolocation" Type="IGoDeliverModel.Geolocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Suburb">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Geolocation">
-              <PropertyRef Name="Suburb" />
+              <PropertyRef Name="SuburbId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -744,6 +830,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="IGoDeliverModel.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="IGoDeliverModel.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -755,6 +853,7 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentCategoryId" ColumnName="ParentCategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -777,6 +876,7 @@
                 <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
                 <ScalarProperty Name="PromoId" ColumnName="PromoId" />
                 <ScalarProperty Name="Distance" ColumnName="Distance" />
+                <ScalarProperty Name="DeliveryCost" ColumnName="DeliveryCost" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -789,6 +889,7 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PromoId" ColumnName="PromoId" />
                 <ScalarProperty Name="OrderRef" ColumnName="OrderRef" />
+                <ScalarProperty Name="DeliveryCost" ColumnName="DeliveryCost" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -800,9 +901,16 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Spiciness" ColumnName="Spiciness" />
                 <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DishCategory">
+            <EntityTypeMapping TypeName="IGoDeliverModel.DishCategory">
+              <MappingFragment StoreEntitySet="DishCategory">
+                <ScalarProperty Name="DishId" ColumnName="DishId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -810,9 +918,12 @@
             <EntityTypeMapping TypeName="IGoDeliverModel.Geolocation">
               <MappingFragment StoreEntitySet="Geolocation">
                 <ScalarProperty Name="LocId" ColumnName="LocId" />
-                <ScalarProperty Name="Suburb" ColumnName="Suburb" />
+                <ScalarProperty Name="SuburbId" ColumnName="SuburbId" />
                 <ScalarProperty Name="Altitude" ColumnName="Altitude" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="StreetNo" ColumnName="StreetNo" />
+                <ScalarProperty Name="UnitNo" ColumnName="UnitNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -844,8 +955,11 @@
             <EntityTypeMapping TypeName="IGoDeliverModel.Restaurant">
               <MappingFragment StoreEntitySet="Restaurant">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
                 <ScalarProperty Name="LocId" ColumnName="LocId" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -868,27 +982,57 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="IGoDeliverModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserProfile">
             <EntityTypeMapping TypeName="IGoDeliverModel.UserProfile">
               <MappingFragment StoreEntitySet="UserProfile">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="LocId" ColumnName="LocId" />
                 <ScalarProperty Name="PaypalAcount" ColumnName="PaypalAcount" />
                 <ScalarProperty Name="CreditCardId" ColumnName="CreditCardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Membership">
+            <EntityTypeMapping TypeName="IGoDeliverModel.webpages_Membership">
+              <MappingFragment StoreEntitySet="webpages_Membership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_OAuthMembership">
+            <EntityTypeMapping TypeName="IGoDeliverModel.webpages_OAuthMembership">
+              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="IGoDeliverModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_UsersInRoles">
+            <EntityTypeMapping TypeName="IGoDeliverModel.webpages_UsersInRoles">
+              <MappingFragment StoreEntitySet="webpages_UsersInRoles">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

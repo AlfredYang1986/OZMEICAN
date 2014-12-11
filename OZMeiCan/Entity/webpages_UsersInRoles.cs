@@ -12,14 +12,11 @@ namespace OZMeiCan.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Payment
+    public partial class webpages_UsersInRoles
     {
-        public Nullable<int> Method { get; set; }
-        public double Amount { get; set; }
-        public int OrderId { get; set; }
         public int UserId { get; set; }
+        public int RoleId { get; set; }
     
-        public virtual DeliveryOrder DeliveryOrder { get; set; }
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual webpages_Roles webpages_Roles { get; set; }
     }
 }

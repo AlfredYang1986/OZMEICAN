@@ -20,8 +20,11 @@ namespace OZMeiCan.Entity
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string RestaurantName { get; set; }
         public Nullable<int> LocId { get; set; }
+        public string ContactName { get; set; }
+        public string ContactPhone { get; set; }
+        public string Description { get; set; }
     
         public virtual ICollection<Dish> Dish { get; set; }
         public virtual Geolocation Geolocation { get; set; }

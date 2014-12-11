@@ -26,6 +26,7 @@ namespace OZMeiCan.Entity
         public string Status { get; set; }
         public Nullable<int> PromoId { get; set; }
         public string OrderRef { get; set; }
+        public double DeliveryCost { get; set; }
     
         public virtual ICollection<DeliverOrderRow> DeliverOrderRow { get; set; }
         public virtual Promotion Promotion { get; set; }

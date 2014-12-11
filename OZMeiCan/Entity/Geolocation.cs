@@ -21,11 +21,14 @@ namespace OZMeiCan.Entity
         }
     
         public int LocId { get; set; }
-        public Nullable<int> Suburb { get; set; }
-        public double Altitude { get; set; }
-        public double Latitude { get; set; }
+        public int SuburbId { get; set; }
+        public Nullable<double> Altitude { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public string Street { get; set; }
+        public int StreetNo { get; set; }
+        public string UnitNo { get; set; }
     
-        public virtual Suburb Suburb1 { get; set; }
+        public virtual Suburb Suburb { get; set; }
         public virtual ICollection<Restaurant> Restaurant { get; set; }
         public virtual ICollection<UserProfile> UserProfile { get; set; }
     }

@@ -200,6 +200,9 @@
     <Compile Include="Entity\Dish.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\DishCategory.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Geolocation.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
@@ -233,10 +236,19 @@
     <Compile Include="Entity\Suburb.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\sysdiagrams.cs">
+    <Compile Include="Entity\UserProfile.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\UserProfile.cs">
+    <Compile Include="Entity\webpages_Membership.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\webpages_OAuthMembership.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\webpages_Roles.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\webpages_UsersInRoles.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />

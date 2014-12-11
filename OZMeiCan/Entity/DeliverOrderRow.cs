@@ -19,9 +19,9 @@ namespace OZMeiCan.Entity
         public double SubTotal { get; set; }
         public Nullable<int> PromoId { get; set; }
         public double Distance { get; set; }
+        public double DeliveryCost { get; set; }
     
         public virtual DeliveryOrder DeliveryOrder { get; set; }
-        public virtual Dish Dish { get; set; }
         public virtual Promotion Promotion { get; set; }
     }
 }

@@ -14,22 +14,14 @@ namespace OZMeiCan.Entity
     
     public partial class Dish
     {
-        public Dish()
-        {
-            this.DeliverOrderRow = new HashSet<DeliverOrderRow>();
-        }
-    
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<double> Price { get; set; }
+        public double Price { get; set; }
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
-        public Nullable<int> CategoryId { get; set; }
         public Nullable<int> Spiciness { get; set; }
         public int RestaurantId { get; set; }
     
-        public virtual Category Category { get; set; }
-        public virtual ICollection<DeliverOrderRow> DeliverOrderRow { get; set; }
         public virtual Restaurant Restaurant { get; set; }
     }
 }
