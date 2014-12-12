@@ -16,12 +16,31 @@
 
 <header style="height: 46px; width: 100%; border: 1px solid red">
     <div id="login" style="width: 1024px; height: 100%; margin: 0px auto; border: 1px solid green">
-        <button type="button" class="btn btn-lg pull-right" aria-label="Left Align">
-            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-        </button>
-        <button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="Left Align">
-            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-        </button>
+        @if (Request.IsAuthenticated)
+        {
+            <text>
+            Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+<a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        }
+            </text>
+            <button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="Left Align">
+                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            </button>
+        }
+        else
+        {
+            <button id="loginBtn" type="button" class="btn btn-lg pull-right" aria-label="Left Align">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            </button>
+            <button id="registerBtn" type="button" class="btn btn-lg pull-right" aria-label="Left Align">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        }
+
+
     </div>
 </header>
 
@@ -32,17 +51,21 @@
         </div>
         <div class="shoppingContent">
             <table style="border: 1px solid #c6baba" border="1" cellspacing="0" cellpadding="0" width="100%">
-            	<tr style="border: 1px solid #c6baba">
-            		<td style="border: 1px solid #c6baba">已点菜品</td>
-            		<td style="border: 1px solid #c6baba">所属餐馆</td>
-            		<td style="border: 1px solid #c6baba">价格</td>
-            		<td style="border: 1px solid #c6baba">份数</td>
-            		<td style="border: 1px solid #c6baba">积分</td>
-            	</tr>
+                <tr style="border: 1px solid #c6baba">
+                    <td style="border: 1px solid #c6baba">已点菜品</td>
+                    <td style="border: 1px solid #c6baba">所属餐馆</td>
+                    <td style="border: 1px solid #c6baba">价格</td>
+                    <td style="border: 1px solid #c6baba">份数</td>
+                    <td style="border: 1px solid #c6baba">积分</td>
+                </tr>
             </table>
 
-            <span class="pull-right"><p>运费</p></span>
-            <span class="pull-right"><p>总价</p></span>
+            <span class="pull-right">
+                <p>运费</p>
+            </span>
+            <span class="pull-right">
+                <p>总价</p>
+            </span>
         </div>
     </div>
 </div>
@@ -91,21 +114,35 @@
                             <img style="width: 100%; height: 100%" src="~/Images/naked.jpg" />
                         </div>
                         <div style="display: table; width: 60%; margin: 0 auto; border: 1px solid red">
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle"><p style="font-size: 1.5em">一些屁话</p></div>
-                        </div>                         
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                            <div style="display: table-cell; text-align: center; vertical-align: middle">
+                                <p style="font-size: 1.5em">一些屁话</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="level1" style="height: 100%; display: none"> 
+    <div id="level1" style="height: 100%; display: none">
         <div class="leftPane pull-left" style="position: relative; width: 50%; height: 100%; border: 1px solid red">
             <div class="label pull-left" style="position: absolute; top: 100px; left: 0px; width: 25px; height: 100px; border-bottom: 1px solid red; border-top: 1px solid red; border-left: 1px solid red">
             </div>
@@ -122,7 +159,8 @@
                                         </button>
                                     </span>
                                     <input type="text" class="form-control">
-                                </div><!-- /input-group -->
+                                </div>
+                                <!-- /input-group -->
 
                                 <div class="btn-group" role="group" aria-label="..." style="width: 60%; margin: 5px auto; padding-left: 50px">
                                     <button id="mapBtn" type="button" class="btn btn-default">地图</button>
@@ -131,7 +169,7 @@
                             </div>
                         </div>
                         <div id="rtContainer" class="listArea">
-                            <div style ="height: 40px; display: table">
+                            <div style="height: 40px; display: table">
                                 <h2 style="margin: 5px; float: left">快捷订餐</h2>
                                 <p style="vertical-align: middle; display: table-cell">几秒完成订单</p>
                             </div>
@@ -140,7 +178,7 @@
                                 <button type="button" class="btn btn-default" style="width: 33.3%; height: 20px; font-size: 0.7em">优惠活动</button>
                                 <button type="button" class="btn btn-default" style="width: 33.3%; height: 20px; font-size: 0.7em">VIP特权</button>
                             </div>
-                            <div id="rtList" style="margin: 5px; border: 1px solid #808080; overflow:auto">
+                            <div id="rtList" style="margin: 5px; border: 1px solid #808080; overflow: auto">
                             </div>
                         </div>
                         <div id="restMap" style="display: none">
@@ -149,7 +187,7 @@
                 </div>
             </div>
         </div>
-        <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue; overflow:auto">
+        <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue; overflow: auto">
             <div style="margin: 30px auto; width: 70%; height: 250px; border: 1px solid #808080">
                 <img style="width: 100%; height: 100%" src="~/Images/naked.jpg" />
             </div>
@@ -170,7 +208,7 @@
         var nv = new CityNav(dataCallback);
         var rt = new RtList();
 
-        $(function(){
+        $(function () {
             var h_l = $('.leftCover').height();
             $('.leftPage').css("height", (h_l - 10) + "px");
 
@@ -231,7 +269,20 @@
                 //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
                 $("#shoppingList").slideDown();
                 $("#content").slideUp();
-            });            $('#shoppingBack').click(function () {                //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });                $("#shoppingList").slideUp();                $("#content").slideDown();            });
+            });
+            $('#shoppingBack').click(function () {
+                //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
+                $("#shoppingList").slideUp();
+                $("#content").slideDown();
+            });
+
+            $('#registerBtn').click(function () {
+                location.href = '@Url.Action("Register", "Account")';
+            });
+
+            $('#loginBtn').click(function () {
+                location.href = '@Url.Action("Login", "Account")';
+            });
         });
 
         function dataCallback() {

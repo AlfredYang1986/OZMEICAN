@@ -16,14 +16,15 @@ namespace OZMeiCan.Entity
     {
         public Suburb()
         {
-            this.Geolocation = new HashSet<Geolocation>();
+            this.Geolocations = new HashSet<Geolocation>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public int StateProvince { get; set; }
+        public Nullable<int> PostalCode { get; set; }
     
-        public virtual ICollection<Geolocation> Geolocation { get; set; }
+        public virtual ICollection<Geolocation> Geolocations { get; set; }
         public virtual StateProvince StateProvince1 { get; set; }
     }
 }

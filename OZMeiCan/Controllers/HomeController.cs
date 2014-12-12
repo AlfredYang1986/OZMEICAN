@@ -20,7 +20,7 @@ namespace OZMeiCan.Controllers
             JArray reVal = new JArray();
             using (var db = new IGoDeliverEntities())
             {
-                foreach (var rest in db.Restaurant)
+                foreach (var rest in db.Restaurants)
                 {
                     dynamic tmp = new JObject();
                     tmp.name = rest.RestaurantName;
@@ -62,7 +62,7 @@ namespace OZMeiCan.Controllers
             JArray provences = new JArray();
             using (var db = new IGoDeliverEntities())
             {
-                var result = db.StateProvince;
+                var result = db.StateProvinces;
                 foreach (var pro in result)
                 {
                     dynamic provence = new JObject();
@@ -70,7 +70,7 @@ namespace OZMeiCan.Controllers
                     provence.name = pro.Name;
 
                     JArray suburb = new JArray();
-                    foreach (var sb in pro.Suburb)
+                    foreach (var sb in pro.Suburbs)
                     {
                         dynamic sbu = new JObject();
                         sbu.shot = String.Format(@"{0}", sb.Name.First());
@@ -82,7 +82,7 @@ namespace OZMeiCan.Controllers
                     provences.Add(provence);
                 }
             }
-            
+
             return Json(JsonConvert.SerializeObject(provences), JsonRequestBehavior.AllowGet);
 
             //for (int p_index = 0; p_index < 9; ++p_index)

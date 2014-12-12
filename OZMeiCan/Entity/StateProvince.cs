@@ -16,7 +16,7 @@ namespace OZMeiCan.Entity
     {
         public StateProvince()
         {
-            this.Suburb = new HashSet<Suburb>();
+            this.Suburbs = new HashSet<Suburb>();
         }
     
         public int Id { get; set; }
@@ -24,6 +24,6 @@ namespace OZMeiCan.Entity
         public string CountryRegionCode { get; set; }
         public string Name { get; set; }
     
-        public virtual ICollection<Suburb> Suburb { get; set; }
+        public virtual ICollection<Suburb> Suburbs { get; set; }
     }
 }

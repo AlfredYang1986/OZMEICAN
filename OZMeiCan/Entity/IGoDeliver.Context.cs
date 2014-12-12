@@ -25,19 +25,19 @@ namespace OZMeiCan.Entity
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Category> Category { get; set; }
-        public DbSet<CreditCard> CreditCard { get; set; }
-        public DbSet<DeliverOrderRow> DeliverOrderRow { get; set; }
-        public DbSet<DeliveryOrder> DeliveryOrder { get; set; }
-        public DbSet<Dish> Dish { get; set; }
-        public DbSet<DishCategory> DishCategory { get; set; }
-        public DbSet<Geolocation> Geolocation { get; set; }
-        public DbSet<Payment> Payment { get; set; }
-        public DbSet<Promotion> Promotion { get; set; }
-        public DbSet<Restaurant> Restaurant { get; set; }
-        public DbSet<StateProvince> StateProvince { get; set; }
-        public DbSet<Suburb> Suburb { get; set; }
-        public DbSet<UserProfile> UserProfile { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<DeliverOrderRow> DeliverOrderRows { get; set; }
+        public DbSet<DeliveryOrder> DeliveryOrders { get; set; }
+        public DbSet<Dish> Dishes { get; set; }
+        public DbSet<DishCategory> DishCategories { get; set; }
+        public DbSet<Geolocation> Geolocations { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<StateProvince> StateProvinces { get; set; }
+        public DbSet<Suburb> Suburbs { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<webpages_Membership> webpages_Membership { get; set; }
         public DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
         public DbSet<webpages_Roles> webpages_Roles { get; set; }
