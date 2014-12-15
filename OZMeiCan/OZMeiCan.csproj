@@ -325,6 +325,14 @@
       <LastGenOutput>IGoDeliver.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Images\icons\icon_SETTING.png" />
+    <Content Include="Images\icons\icon_USER.png" />
+    <Content Include="Images\icons\tag_BF.png" />
+    <Content Include="Images\icons\tag_BF_colour.png" />
+    <Content Include="Images\icons\tag_DINNER.png" />
+    <Content Include="Images\icons\tag_DINNER_colour.png" />
+    <Content Include="Images\icons\tag_LUNCH.png" />
+    <Content Include="Images\icons\tag_LUNCH_colour.png" />
     <Content Include="Images\naked.jpg" />
     <Content Include="Scripts\CityNav\CityNav.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />

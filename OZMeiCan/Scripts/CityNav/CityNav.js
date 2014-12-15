@@ -153,7 +153,7 @@ CityNav.prototype.listAllBtns = function () {
 CityNav.prototype.createNavButton = function (n, v) {
     var self = this;
 
-    var element = $("<button class='navBtn pull-left' style='width: 60px; height: 40px; margin-right: 3px'> \
+    var element = $("<button class='navBtn pull-left' style='width: 60px; height: 40px; margin-left: -1px; margin-right: 3px; background-color: white; border: 1px solid #62BBFF'> \
                    </button>").appendTo($('#cityNav'));
     element.html(n);
     element.attr('data-level', v);
@@ -183,7 +183,7 @@ CityNav.prototype.createListButton = function (array, level) {
     var self = this;
     
     $.each(array, function (index, item) {
-        var element = $("<button class='listBtn' style='width: 100%; height: 40px'></button>").appendTo($('#cities'));
+        var element = $("<button class='listBtn' style='width: 100%; height: 40px; background-color: white; border: 1px solid #62BBFF'></button>").appendTo($('#cities'));
         element.html(item);
         element.attr("data-level", level);
 
