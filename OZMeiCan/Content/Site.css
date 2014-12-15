@@ -328,6 +328,11 @@ aside {
 }
 
 /* login page */
+
+div #registerPanel { width: 300px; border: 1px solid red; float: left}
+div #loginPanel { width: 300px; border: 1px solid red; float: right}
+
+
 #loginForm {
     border-right: solid 2px #c8c8c8;
     float: left;

@@ -16,8 +16,8 @@ namespace OZMeiCan.Entity
     {
         public Geolocation()
         {
-            this.Restaurant = new HashSet<Restaurant>();
-            this.UserProfile = new HashSet<UserProfile>();
+            this.Restaurants = new HashSet<Restaurant>();
+            this.UserProfiles = new HashSet<UserProfile>();
         }
     
         public int LocId { get; set; }
@@ -29,7 +29,7 @@ namespace OZMeiCan.Entity
         public string UnitNo { get; set; }
     
         public virtual Suburb Suburb { get; set; }
-        public virtual ICollection<Restaurant> Restaurant { get; set; }
-        public virtual ICollection<UserProfile> UserProfile { get; set; }
+        public virtual ICollection<Restaurant> Restaurants { get; set; }
+        public virtual ICollection<UserProfile> UserProfiles { get; set; }
     }
 }

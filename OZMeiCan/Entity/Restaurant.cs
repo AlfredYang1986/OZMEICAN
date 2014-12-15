@@ -16,7 +16,7 @@ namespace OZMeiCan.Entity
     {
         public Restaurant()
         {
-            this.Dish = new HashSet<Dish>();
+            this.Dishes = new HashSet<Dish>();
         }
     
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace OZMeiCan.Entity
         public string ContactPhone { get; set; }
         public string Description { get; set; }
     
-        public virtual ICollection<Dish> Dish { get; set; }
+        public virtual ICollection<Dish> Dishes { get; set; }
         public virtual Geolocation Geolocation { get; set; }
     }
 }

@@ -16,13 +16,13 @@ namespace OZMeiCan.Entity
     {
         public Category()
         {
-            this.DishCategory = new HashSet<DishCategory>();
+            this.DishCategories = new HashSet<DishCategory>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public Nullable<int> ParentCategoryId { get; set; }
     
-        public virtual ICollection<DishCategory> DishCategory { get; set; }
+        public virtual ICollection<DishCategory> DishCategories { get; set; }
     }
 }

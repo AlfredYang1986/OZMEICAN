@@ -16,8 +16,8 @@ namespace OZMeiCan.Entity
     {
         public Promotion()
         {
-            this.DeliverOrderRow = new HashSet<DeliverOrderRow>();
-            this.DeliveryOrder = new HashSet<DeliveryOrder>();
+            this.DeliverOrderRows = new HashSet<DeliverOrderRow>();
+            this.DeliveryOrders = new HashSet<DeliveryOrder>();
         }
     
         public int Id { get; set; }
@@ -29,7 +29,7 @@ namespace OZMeiCan.Entity
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
     
-        public virtual ICollection<DeliverOrderRow> DeliverOrderRow { get; set; }
-        public virtual ICollection<DeliveryOrder> DeliveryOrder { get; set; }
+        public virtual ICollection<DeliverOrderRow> DeliverOrderRows { get; set; }
+        public virtual ICollection<DeliveryOrder> DeliveryOrders { get; set; }
     }
 }
