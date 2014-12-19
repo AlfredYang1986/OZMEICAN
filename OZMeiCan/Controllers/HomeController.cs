@@ -98,7 +98,7 @@ namespace OZMeiCan.Controllers
 
         public async Task<ActionResult> PayPalPayment(double price)
         {
-            var approvalUrl = await PayPalPaymentFacad.createPayment(price.ToString(), @"Alfred Test"
+            var approvalUrl = await PayPalPaymentFacad.createPayment(price.ToString("F"), @"Alfred Test"
                                         , @"http://localhost:2444/Home/ConfirmPayment"
                                         , @"http://localhost:2444/Home/CancelPayment");
             return Redirect(approvalUrl);

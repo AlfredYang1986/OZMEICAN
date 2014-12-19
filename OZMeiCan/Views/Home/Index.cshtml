@@ -11,7 +11,7 @@
     <link href="~/Content/Bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
 
     @* <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=x3AY8bSPxj5PRaGy1OR2AP65"></script>*@
-    @*<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>*@
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
 }
 
 <script type="text/javascript">
@@ -68,7 +68,7 @@
                 <p>运费</p>
             </span>*@
             <span class="pull-right">
-                <p>总价 : <span id="total-price">0.0</span></p>
+                <p>总价 : <span id="total-price">0.00</span></p>
             </span>
 
             <button id="payBtn" class="pull-right btn btn-lg">Pay</button>
@@ -314,7 +314,7 @@
             });
 
             $('#payBtn').click(function () {
-                window.location.href = "/Home/PayPalPayment?price=1.0"// + $('#total-price').text();
+                window.location.href = "/Home/PayPalPayment?price=" + parseFloat($('#total-price').text());
             });
         });
 
