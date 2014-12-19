@@ -34,7 +34,7 @@ RtList.prototype.initRTView = function () {
     $('#rtList').children().remove();
 
     $.each(this.rt, function (index, item) {
-        var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black'> \
+        var element = $("<div class='restBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black; cursor: pointer'> \
                             <strong class='ele-title' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</strong> \
                             <p class='ele-dis' style='display: table-cell; vertical-align: middle;'>123</p> \
                          </div>").appendTo($('#rtList'));
@@ -42,10 +42,18 @@ RtList.prototype.initRTView = function () {
         element.children('p').first().html(item.dish);
 
         element.click(function () {
-            self.createDishContent("test", "test");
-            self.inDishView();
+            self.createDishContent(item.name, "test");
+            self.initDishView();
+
+            $.each($(".restBtn"), function (id, it) {
+                $(it).removeClass("rtBtn_active");
+            });
+
+            $(this).addClass("rtBtn_active");
         });
     });
+
+    $(".restBtn").first().click();
 }
 
 RtList.prototype.createDishContent = function (name, cor) {
@@ -79,13 +87,15 @@ RtList.prototype.initDishView = function () {
     $('#dishList').children().remove();
 
     $.each(this.ds, function (index, item) {
-        var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black'> \
-                            <p class='ele-title' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
+        var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black; cursor: pointer'> \
+                            <p class='ele-title, pull-left' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
+                            <p class='ele-price, pull-right' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
                          </div>").appendTo($('#dishList'));
         element.children('p').first().html(item.name);
+        element.children('p').last().html(item.price);
 
         element.click(function () {
-            alert("dish click");
+            $(this).addClass("dishBtn_active");
         });
     });
 }

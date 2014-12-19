@@ -12,23 +12,17 @@ namespace OZMeiCan.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Restaurant
+    public partial class PictureOfRestaurants
     {
-        public Restaurant()
+        public PictureOfRestaurants()
         {
-            this.Dish = new HashSet<Dish>();
             this.RestaurantPicture = new HashSet<RestaurantPicture>();
         }
     
         public int Id { get; set; }
-        public string RestaurantName { get; set; }
-        public Nullable<int> LocId { get; set; }
-        public string ContactName { get; set; }
-        public string ContactPhone { get; set; }
-        public string Description { get; set; }
+        public byte[] Thumbnail { get; set; }
+        public string Path { get; set; }
     
-        public virtual ICollection<Dish> Dish { get; set; }
-        public virtual Geolocation Geolocation { get; set; }
         public virtual ICollection<RestaurantPicture> RestaurantPicture { get; set; }
     }
 }

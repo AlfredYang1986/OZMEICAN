@@ -12,10 +12,14 @@
           <EntitySet Name="DeliveryOrder" EntityType="IGoDeliverModel.Store.DeliveryOrder" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Dish" EntityType="IGoDeliverModel.Store.Dish" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="DishCategory" EntityType="IGoDeliverModel.Store.DishCategory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DishPicture" EntityType="IGoDeliverModel.Store.DishPicture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Geolocation" EntityType="IGoDeliverModel.Store.Geolocation" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Payment" EntityType="IGoDeliverModel.Store.Payment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PictureOfDishes" EntityType="IGoDeliverModel.Store.PictureOfDishes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PictureOfRestaurants" EntityType="IGoDeliverModel.Store.PictureOfRestaurants" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Promotion" EntityType="IGoDeliverModel.Store.Promotion" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Restaurant" EntityType="IGoDeliverModel.Store.Restaurant" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RestaurantPicture" EntityType="IGoDeliverModel.Store.RestaurantPicture" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="StateProvince" EntityType="IGoDeliverModel.Store.StateProvince" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Suburb" EntityType="IGoDeliverModel.Store.Suburb" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserProfile" EntityType="IGoDeliverModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
@@ -43,6 +47,18 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="DishCategory" EntitySet="DishCategory" />
           </AssociationSet>
+          <AssociationSet Name="FK_DishCategory_Dish" Association="IGoDeliverModel.Store.FK_DishCategory_Dish">
+            <End Role="Dish" EntitySet="Dish" />
+            <End Role="DishCategory" EntitySet="DishCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishPicture_Dish" Association="IGoDeliverModel.Store.FK_DishPicture_Dish">
+            <End Role="Dish" EntitySet="Dish" />
+            <End Role="DishPicture" EntitySet="DishPicture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishPicture_PictureOfDishes" Association="IGoDeliverModel.Store.FK_DishPicture_PictureOfDishes">
+            <End Role="PictureOfDishes" EntitySet="PictureOfDishes" />
+            <End Role="DishPicture" EntitySet="DishPicture" />
+          </AssociationSet>
           <AssociationSet Name="FK_Geolocation_Suburb" Association="IGoDeliverModel.Store.FK_Geolocation_Suburb">
             <End Role="Suburb" EntitySet="Suburb" />
             <End Role="Geolocation" EntitySet="Geolocation" />
@@ -58,6 +74,14 @@
           <AssociationSet Name="FK_Restaurant_Geolocation" Association="IGoDeliverModel.Store.FK_Restaurant_Geolocation">
             <End Role="Geolocation" EntitySet="Geolocation" />
             <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantPicture_Picture" Association="IGoDeliverModel.Store.FK_RestaurantPicture_Picture">
+            <End Role="PictureOfRestaurants" EntitySet="PictureOfRestaurants" />
+            <End Role="RestaurantPicture" EntitySet="RestaurantPicture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantPicture_Restaurant" Association="IGoDeliverModel.Store.FK_RestaurantPicture_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="RestaurantPicture" EntitySet="RestaurantPicture" />
           </AssociationSet>
           <AssociationSet Name="fk_RoleId" Association="IGoDeliverModel.Store.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
@@ -138,6 +162,15 @@
           <Property Name="DishId" Type="int" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="DishPicture">
+          <Key>
+            <PropertyRef Name="DishId" />
+            <PropertyRef Name="PictureId" />
+          </Key>
+          <Property Name="DishId" Type="int" Nullable="false" />
+          <Property Name="PictureId" Type="int" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Geolocation">
           <Key>
             <PropertyRef Name="LocId" />
@@ -159,6 +192,22 @@
           <Property Name="Amount" Type="float" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PictureOfDishes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Thumbnail" Type="varbinary" />
+          <Property Name="Path" Type="nvarchar" Nullable="false" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PictureOfRestaurants">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Thumbnail" Type="varbinary" />
+          <Property Name="Path" Type="nvarchar" Nullable="false" MaxLength="500" />
         </EntityType>
         <EntityType Name="Promotion">
           <Key>
@@ -183,6 +232,15 @@
           <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactPhone" Type="nvarchar" MaxLength="20" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="RestaurantPicture">
+          <Key>
+            <PropertyRef Name="RestaurantId" />
+            <PropertyRef Name="PictureId" />
+          </Key>
+          <Property Name="RestaurantId" Type="int" Nullable="false" />
+          <Property Name="PictureId" Type="int" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="StateProvince">
           <Key>
@@ -313,6 +371,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DishCategory_Dish">
+          <End Role="Dish" Type="IGoDeliverModel.Store.Dish" Multiplicity="1" />
+          <End Role="DishCategory" Type="IGoDeliverModel.Store.DishCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dish">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DishCategory">
+              <PropertyRef Name="DishId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishPicture_Dish">
+          <End Role="Dish" Type="IGoDeliverModel.Store.Dish" Multiplicity="1" />
+          <End Role="DishPicture" Type="IGoDeliverModel.Store.DishPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dish">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DishPicture">
+              <PropertyRef Name="DishId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishPicture_PictureOfDishes">
+          <End Role="PictureOfDishes" Type="IGoDeliverModel.Store.PictureOfDishes" Multiplicity="1" />
+          <End Role="DishPicture" Type="IGoDeliverModel.Store.DishPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PictureOfDishes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DishPicture">
+              <PropertyRef Name="PictureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Geolocation_Suburb">
           <End Role="Suburb" Type="IGoDeliverModel.Store.Suburb" Multiplicity="1" />
           <End Role="Geolocation" Type="IGoDeliverModel.Store.Geolocation" Multiplicity="*" />
@@ -358,6 +452,30 @@
             </Principal>
             <Dependent Role="Restaurant">
               <PropertyRef Name="LocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurantPicture_Picture">
+          <End Role="PictureOfRestaurants" Type="IGoDeliverModel.Store.PictureOfRestaurants" Multiplicity="1" />
+          <End Role="RestaurantPicture" Type="IGoDeliverModel.Store.RestaurantPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PictureOfRestaurants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestaurantPicture">
+              <PropertyRef Name="PictureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurantPicture_Restaurant">
+          <End Role="Restaurant" Type="IGoDeliverModel.Store.Restaurant" Multiplicity="1" />
+          <End Role="RestaurantPicture" Type="IGoDeliverModel.Store.RestaurantPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestaurantPicture">
+              <PropertyRef Name="RestaurantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -415,74 +533,93 @@
     <edmx:ConceptualModels>
       <Schema Namespace="IGoDeliverModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="IGoDeliverEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="Categories" EntityType="IGoDeliverModel.Category" />
-          <EntitySet Name="CreditCards" EntityType="IGoDeliverModel.CreditCard" />
-          <EntitySet Name="DeliverOrderRows" EntityType="IGoDeliverModel.DeliverOrderRow" />
-          <EntitySet Name="DeliveryOrders" EntityType="IGoDeliverModel.DeliveryOrder" />
-          <EntitySet Name="Dishes" EntityType="IGoDeliverModel.Dish" />
-          <EntitySet Name="DishCategories" EntityType="IGoDeliverModel.DishCategory" />
-          <EntitySet Name="Geolocations" EntityType="IGoDeliverModel.Geolocation" />
-          <EntitySet Name="Payments" EntityType="IGoDeliverModel.Payment" />
-          <EntitySet Name="Promotions" EntityType="IGoDeliverModel.Promotion" />
-          <EntitySet Name="Restaurants" EntityType="IGoDeliverModel.Restaurant" />
-          <EntitySet Name="StateProvinces" EntityType="IGoDeliverModel.StateProvince" />
-          <EntitySet Name="Suburbs" EntityType="IGoDeliverModel.Suburb" />
-          <EntitySet Name="UserProfiles" EntityType="IGoDeliverModel.UserProfile" />
+          <EntitySet Name="Category" EntityType="IGoDeliverModel.Category" />
+          <EntitySet Name="CreditCard" EntityType="IGoDeliverModel.CreditCard" />
+          <EntitySet Name="DeliverOrderRow" EntityType="IGoDeliverModel.DeliverOrderRow" />
+          <EntitySet Name="DeliveryOrder" EntityType="IGoDeliverModel.DeliveryOrder" />
+          <EntitySet Name="Dish" EntityType="IGoDeliverModel.Dish" />
+          <EntitySet Name="DishPicture" EntityType="IGoDeliverModel.DishPicture" />
+          <EntitySet Name="Geolocation" EntityType="IGoDeliverModel.Geolocation" />
+          <EntitySet Name="Payment" EntityType="IGoDeliverModel.Payment" />
+          <EntitySet Name="PictureOfDishes" EntityType="IGoDeliverModel.PictureOfDishes" />
+          <EntitySet Name="PictureOfRestaurants" EntityType="IGoDeliverModel.PictureOfRestaurants" />
+          <EntitySet Name="Promotion" EntityType="IGoDeliverModel.Promotion" />
+          <EntitySet Name="Restaurant" EntityType="IGoDeliverModel.Restaurant" />
+          <EntitySet Name="RestaurantPicture" EntityType="IGoDeliverModel.RestaurantPicture" />
+          <EntitySet Name="StateProvince" EntityType="IGoDeliverModel.StateProvince" />
+          <EntitySet Name="Suburb" EntityType="IGoDeliverModel.Suburb" />
+          <EntitySet Name="UserProfile" EntityType="IGoDeliverModel.UserProfile" />
           <EntitySet Name="webpages_Membership" EntityType="IGoDeliverModel.webpages_Membership" />
           <EntitySet Name="webpages_OAuthMembership" EntityType="IGoDeliverModel.webpages_OAuthMembership" />
           <EntitySet Name="webpages_Roles" EntityType="IGoDeliverModel.webpages_Roles" />
           <EntitySet Name="webpages_UsersInRoles" EntityType="IGoDeliverModel.webpages_UsersInRoles" />
-          <AssociationSet Name="FK_DishCategory_Category" Association="IGoDeliverModel.FK_DishCategory_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="DishCategory" EntitySet="DishCategories" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserProfile_CreditCard" Association="IGoDeliverModel.FK_UserProfile_CreditCard">
-            <End Role="CreditCard" EntitySet="CreditCards" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="CreditCard" EntitySet="CreditCard" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
           <AssociationSet Name="FK_DeliverOrderRow_DeliveryOrder" Association="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder">
-            <End Role="DeliveryOrder" EntitySet="DeliveryOrders" />
-            <End Role="DeliverOrderRow" EntitySet="DeliverOrderRows" />
+            <End Role="DeliveryOrder" EntitySet="DeliveryOrder" />
+            <End Role="DeliverOrderRow" EntitySet="DeliverOrderRow" />
           </AssociationSet>
           <AssociationSet Name="FK_DeliverOrderRow_Promotion" Association="IGoDeliverModel.FK_DeliverOrderRow_Promotion">
-            <End Role="Promotion" EntitySet="Promotions" />
-            <End Role="DeliverOrderRow" EntitySet="DeliverOrderRows" />
+            <End Role="Promotion" EntitySet="Promotion" />
+            <End Role="DeliverOrderRow" EntitySet="DeliverOrderRow" />
           </AssociationSet>
           <AssociationSet Name="FK_DeliveryOrder_Promotion" Association="IGoDeliverModel.FK_DeliveryOrder_Promotion">
-            <End Role="Promotion" EntitySet="Promotions" />
-            <End Role="DeliveryOrder" EntitySet="DeliveryOrders" />
+            <End Role="Promotion" EntitySet="Promotion" />
+            <End Role="DeliveryOrder" EntitySet="DeliveryOrder" />
           </AssociationSet>
           <AssociationSet Name="FK_Payment_DeliveryOrder" Association="IGoDeliverModel.FK_Payment_DeliveryOrder">
-            <End Role="DeliveryOrder" EntitySet="DeliveryOrders" />
-            <End Role="Payment" EntitySet="Payments" />
+            <End Role="DeliveryOrder" EntitySet="DeliveryOrder" />
+            <End Role="Payment" EntitySet="Payment" />
           </AssociationSet>
           <AssociationSet Name="FK_Dish_Restaurant" Association="IGoDeliverModel.FK_Dish_Restaurant">
-            <End Role="Restaurant" EntitySet="Restaurants" />
-            <End Role="Dish" EntitySet="Dishes" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="Dish" EntitySet="Dish" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishPicture_Dish" Association="IGoDeliverModel.FK_DishPicture_Dish">
+            <End Role="Dish" EntitySet="Dish" />
+            <End Role="DishPicture" EntitySet="DishPicture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishPicture_PictureOfDishes" Association="IGoDeliverModel.FK_DishPicture_PictureOfDishes">
+            <End Role="PictureOfDishes" EntitySet="PictureOfDishes" />
+            <End Role="DishPicture" EntitySet="DishPicture" />
           </AssociationSet>
           <AssociationSet Name="FK_Geolocation_Suburb" Association="IGoDeliverModel.FK_Geolocation_Suburb">
-            <End Role="Suburb" EntitySet="Suburbs" />
-            <End Role="Geolocation" EntitySet="Geolocations" />
+            <End Role="Suburb" EntitySet="Suburb" />
+            <End Role="Geolocation" EntitySet="Geolocation" />
           </AssociationSet>
           <AssociationSet Name="FK_Restaurant_Geolocation" Association="IGoDeliverModel.FK_Restaurant_Geolocation">
-            <End Role="Geolocation" EntitySet="Geolocations" />
-            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="Geolocation" EntitySet="Geolocation" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
           </AssociationSet>
           <AssociationSet Name="FK_UserProfile_Geolocation" Association="IGoDeliverModel.FK_UserProfile_Geolocation">
-            <End Role="Geolocation" EntitySet="Geolocations" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Geolocation" EntitySet="Geolocation" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
           </AssociationSet>
           <AssociationSet Name="FK_Payment_UserProfile" Association="IGoDeliverModel.FK_Payment_UserProfile">
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-            <End Role="Payment" EntitySet="Payments" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantPicture_Picture" Association="IGoDeliverModel.FK_RestaurantPicture_Picture">
+            <End Role="PictureOfRestaurants" EntitySet="PictureOfRestaurants" />
+            <End Role="RestaurantPicture" EntitySet="RestaurantPicture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantPicture_Restaurant" Association="IGoDeliverModel.FK_RestaurantPicture_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="RestaurantPicture" EntitySet="RestaurantPicture" />
           </AssociationSet>
           <AssociationSet Name="FK_Suburb_StateProvince" Association="IGoDeliverModel.FK_Suburb_StateProvince">
-            <End Role="StateProvince" EntitySet="StateProvinces" />
-            <End Role="Suburb" EntitySet="Suburbs" />
+            <End Role="StateProvince" EntitySet="StateProvince" />
+            <End Role="Suburb" EntitySet="Suburb" />
           </AssociationSet>
           <AssociationSet Name="fk_RoleId" Association="IGoDeliverModel.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="DishCategory" Association="IGoDeliverModel.DishCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Dish" EntitySet="Dish" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
@@ -492,7 +629,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="ParentCategoryId" Type="Int32" />
-          <NavigationProperty Name="DishCategories" Relationship="IGoDeliverModel.FK_DishCategory_Category" FromRole="Category" ToRole="DishCategory" />
+          <NavigationProperty Name="Dish" Relationship="IGoDeliverModel.DishCategory" FromRole="Category" ToRole="Dish" />
         </EntityType>
         <EntityType Name="CreditCard">
           <Key>
@@ -503,7 +640,7 @@
           <Property Name="CardNumber" Type="String" Nullable="false" MaxLength="25" Unicode="true" FixedLength="false" />
           <Property Name="ExpMonth" Type="Byte" Nullable="false" />
           <Property Name="ExpYear" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="UserProfiles" Relationship="IGoDeliverModel.FK_UserProfile_CreditCard" FromRole="CreditCard" ToRole="UserProfile" />
+          <NavigationProperty Name="UserProfile" Relationship="IGoDeliverModel.FK_UserProfile_CreditCard" FromRole="CreditCard" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="DeliverOrderRow">
           <Key>
@@ -530,9 +667,9 @@
           <Property Name="PromoId" Type="Int32" />
           <Property Name="OrderRef" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
           <Property Name="DeliveryCost" Type="Double" Nullable="false" />
-          <NavigationProperty Name="DeliverOrderRows" Relationship="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder" FromRole="DeliveryOrder" ToRole="DeliverOrderRow" />
+          <NavigationProperty Name="DeliverOrderRow" Relationship="IGoDeliverModel.FK_DeliverOrderRow_DeliveryOrder" FromRole="DeliveryOrder" ToRole="DeliverOrderRow" />
           <NavigationProperty Name="Promotion" Relationship="IGoDeliverModel.FK_DeliveryOrder_Promotion" FromRole="DeliveryOrder" ToRole="Promotion" />
-          <NavigationProperty Name="Payments" Relationship="IGoDeliverModel.FK_Payment_DeliveryOrder" FromRole="DeliveryOrder" ToRole="Payment" />
+          <NavigationProperty Name="Payment" Relationship="IGoDeliverModel.FK_Payment_DeliveryOrder" FromRole="DeliveryOrder" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Dish">
           <Key>
@@ -546,15 +683,19 @@
           <Property Name="Spiciness" Type="Int32" />
           <Property Name="RestaurantId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Restaurant" Relationship="IGoDeliverModel.FK_Dish_Restaurant" FromRole="Dish" ToRole="Restaurant" />
+          <NavigationProperty Name="DishPicture" Relationship="IGoDeliverModel.FK_DishPicture_Dish" FromRole="Dish" ToRole="DishPicture" />
+          <NavigationProperty Name="Category" Relationship="IGoDeliverModel.DishCategory" FromRole="Dish" ToRole="Category" />
         </EntityType>
-        <EntityType Name="DishCategory">
+        <EntityType Name="DishPicture">
           <Key>
             <PropertyRef Name="DishId" />
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="PictureId" />
           </Key>
           <Property Name="DishId" Type="Int32" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="IGoDeliverModel.FK_DishCategory_Category" FromRole="DishCategory" ToRole="Category" />
+          <Property Name="PictureId" Type="Int32" Nullable="false" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Dish" Relationship="IGoDeliverModel.FK_DishPicture_Dish" FromRole="DishPicture" ToRole="Dish" />
+          <NavigationProperty Name="PictureOfDishes" Relationship="IGoDeliverModel.FK_DishPicture_PictureOfDishes" FromRole="DishPicture" ToRole="PictureOfDishes" />
         </EntityType>
         <EntityType Name="Geolocation">
           <Key>
@@ -568,8 +709,8 @@
           <Property Name="StreetNo" Type="Int32" Nullable="false" />
           <Property Name="UnitNo" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Suburb" Relationship="IGoDeliverModel.FK_Geolocation_Suburb" FromRole="Geolocation" ToRole="Suburb" />
-          <NavigationProperty Name="Restaurants" Relationship="IGoDeliverModel.FK_Restaurant_Geolocation" FromRole="Geolocation" ToRole="Restaurant" />
-          <NavigationProperty Name="UserProfiles" Relationship="IGoDeliverModel.FK_UserProfile_Geolocation" FromRole="Geolocation" ToRole="UserProfile" />
+          <NavigationProperty Name="Restaurant" Relationship="IGoDeliverModel.FK_Restaurant_Geolocation" FromRole="Geolocation" ToRole="Restaurant" />
+          <NavigationProperty Name="UserProfile" Relationship="IGoDeliverModel.FK_UserProfile_Geolocation" FromRole="Geolocation" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -583,6 +724,24 @@
           <NavigationProperty Name="DeliveryOrder" Relationship="IGoDeliverModel.FK_Payment_DeliveryOrder" FromRole="Payment" ToRole="DeliveryOrder" />
           <NavigationProperty Name="UserProfile" Relationship="IGoDeliverModel.FK_Payment_UserProfile" FromRole="Payment" ToRole="UserProfile" />
         </EntityType>
+        <EntityType Name="PictureOfDishes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Thumbnail" Type="Binary" MaxLength="8000" FixedLength="false" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="DishPicture" Relationship="IGoDeliverModel.FK_DishPicture_PictureOfDishes" FromRole="PictureOfDishes" ToRole="DishPicture" />
+        </EntityType>
+        <EntityType Name="PictureOfRestaurants">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Thumbnail" Type="Binary" MaxLength="8000" FixedLength="false" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="500" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="RestaurantPicture" Relationship="IGoDeliverModel.FK_RestaurantPicture_Picture" FromRole="PictureOfRestaurants" ToRole="RestaurantPicture" />
+        </EntityType>
         <EntityType Name="Promotion">
           <Key>
             <PropertyRef Name="Id" />
@@ -595,8 +754,8 @@
           <Property Name="Code" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
           <Property Name="StartTime" Type="DateTime" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="DeliverOrderRows" Relationship="IGoDeliverModel.FK_DeliverOrderRow_Promotion" FromRole="Promotion" ToRole="DeliverOrderRow" />
-          <NavigationProperty Name="DeliveryOrders" Relationship="IGoDeliverModel.FK_DeliveryOrder_Promotion" FromRole="Promotion" ToRole="DeliveryOrder" />
+          <NavigationProperty Name="DeliverOrderRow" Relationship="IGoDeliverModel.FK_DeliverOrderRow_Promotion" FromRole="Promotion" ToRole="DeliverOrderRow" />
+          <NavigationProperty Name="DeliveryOrder" Relationship="IGoDeliverModel.FK_DeliveryOrder_Promotion" FromRole="Promotion" ToRole="DeliveryOrder" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -608,8 +767,20 @@
           <Property Name="ContactName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="ContactPhone" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Dishes" Relationship="IGoDeliverModel.FK_Dish_Restaurant" FromRole="Restaurant" ToRole="Dish" />
+          <NavigationProperty Name="Dish" Relationship="IGoDeliverModel.FK_Dish_Restaurant" FromRole="Restaurant" ToRole="Dish" />
           <NavigationProperty Name="Geolocation" Relationship="IGoDeliverModel.FK_Restaurant_Geolocation" FromRole="Restaurant" ToRole="Geolocation" />
+          <NavigationProperty Name="RestaurantPicture" Relationship="IGoDeliverModel.FK_RestaurantPicture_Restaurant" FromRole="Restaurant" ToRole="RestaurantPicture" />
+        </EntityType>
+        <EntityType Name="RestaurantPicture">
+          <Key>
+            <PropertyRef Name="RestaurantId" />
+            <PropertyRef Name="PictureId" />
+          </Key>
+          <Property Name="RestaurantId" Type="Int32" Nullable="false" />
+          <Property Name="PictureId" Type="Int32" Nullable="false" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PictureOfRestaurants" Relationship="IGoDeliverModel.FK_RestaurantPicture_Picture" FromRole="RestaurantPicture" ToRole="PictureOfRestaurants" />
+          <NavigationProperty Name="Restaurant" Relationship="IGoDeliverModel.FK_RestaurantPicture_Restaurant" FromRole="RestaurantPicture" ToRole="Restaurant" />
         </EntityType>
         <EntityType Name="StateProvince">
           <Key>
@@ -619,7 +790,7 @@
           <Property Name="Code" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="true" />
           <Property Name="CountryRegionCode" Type="String" Nullable="false" MaxLength="3" Unicode="true" FixedLength="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Suburbs" Relationship="IGoDeliverModel.FK_Suburb_StateProvince" FromRole="StateProvince" ToRole="Suburb" />
+          <NavigationProperty Name="Suburb" Relationship="IGoDeliverModel.FK_Suburb_StateProvince" FromRole="StateProvince" ToRole="Suburb" />
         </EntityType>
         <EntityType Name="Suburb">
           <Key>
@@ -629,7 +800,7 @@
           <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="StateProvince" Type="Int32" Nullable="false" />
           <Property Name="PostalCode" Type="Int32" />
-          <NavigationProperty Name="Geolocations" Relationship="IGoDeliverModel.FK_Geolocation_Suburb" FromRole="Suburb" ToRole="Geolocation" />
+          <NavigationProperty Name="Geolocation" Relationship="IGoDeliverModel.FK_Geolocation_Suburb" FromRole="Suburb" ToRole="Geolocation" />
           <NavigationProperty Name="StateProvince1" Relationship="IGoDeliverModel.FK_Suburb_StateProvince" FromRole="Suburb" ToRole="StateProvince" />
         </EntityType>
         <EntityType Name="UserProfile">
@@ -644,7 +815,7 @@
           <Property Name="CreditCardId" Type="Int32" />
           <NavigationProperty Name="CreditCard" Relationship="IGoDeliverModel.FK_UserProfile_CreditCard" FromRole="UserProfile" ToRole="CreditCard" />
           <NavigationProperty Name="Geolocation" Relationship="IGoDeliverModel.FK_UserProfile_Geolocation" FromRole="UserProfile" ToRole="Geolocation" />
-          <NavigationProperty Name="Payments" Relationship="IGoDeliverModel.FK_Payment_UserProfile" FromRole="UserProfile" ToRole="Payment" />
+          <NavigationProperty Name="Payment" Relationship="IGoDeliverModel.FK_Payment_UserProfile" FromRole="UserProfile" ToRole="Payment" />
         </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -688,18 +859,6 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="webpages_Roles" Relationship="IGoDeliverModel.fk_RoleId" FromRole="webpages_UsersInRoles" ToRole="webpages_Roles" />
         </EntityType>
-        <Association Name="FK_DishCategory_Category">
-          <End Role="Category" Type="IGoDeliverModel.Category" Multiplicity="1" />
-          <End Role="DishCategory" Type="IGoDeliverModel.DishCategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DishCategory">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserProfile_CreditCard">
           <End Role="CreditCard" Type="IGoDeliverModel.CreditCard" Multiplicity="0..1" />
           <End Role="UserProfile" Type="IGoDeliverModel.UserProfile" Multiplicity="*" />
@@ -772,6 +931,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DishPicture_Dish">
+          <End Role="Dish" Type="IGoDeliverModel.Dish" Multiplicity="1" />
+          <End Role="DishPicture" Type="IGoDeliverModel.DishPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dish">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DishPicture">
+              <PropertyRef Name="DishId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishPicture_PictureOfDishes">
+          <End Role="PictureOfDishes" Type="IGoDeliverModel.PictureOfDishes" Multiplicity="1" />
+          <End Role="DishPicture" Type="IGoDeliverModel.DishPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PictureOfDishes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DishPicture">
+              <PropertyRef Name="PictureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Geolocation_Suburb">
           <End Role="Suburb" Type="IGoDeliverModel.Suburb" Multiplicity="1" />
           <End Role="Geolocation" Type="IGoDeliverModel.Geolocation" Multiplicity="*" />
@@ -820,6 +1003,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RestaurantPicture_Picture">
+          <End Role="PictureOfRestaurants" Type="IGoDeliverModel.PictureOfRestaurants" Multiplicity="1" />
+          <End Role="RestaurantPicture" Type="IGoDeliverModel.RestaurantPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PictureOfRestaurants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestaurantPicture">
+              <PropertyRef Name="PictureId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurantPicture_Restaurant">
+          <End Role="Restaurant" Type="IGoDeliverModel.Restaurant" Multiplicity="1" />
+          <End Role="RestaurantPicture" Type="IGoDeliverModel.RestaurantPicture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestaurantPicture">
+              <PropertyRef Name="RestaurantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Suburb_StateProvince">
           <End Role="StateProvince" Type="IGoDeliverModel.StateProvince" Multiplicity="1" />
           <End Role="Suburb" Type="IGoDeliverModel.Suburb" Multiplicity="*" />
@@ -844,13 +1051,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="DishCategory">
+          <End Role="Category" Type="IGoDeliverModel.Category" Multiplicity="*" />
+          <End Role="Dish" Type="IGoDeliverModel.Dish" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="IGoDeliverModelStoreContainer" CdmEntityContainer="IGoDeliverEntities">
-          <EntitySetMapping Name="Categories">
+          <EntitySetMapping Name="Category">
             <EntityTypeMapping TypeName="IGoDeliverModel.Category">
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -859,7 +1070,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CreditCards">
+          <EntitySetMapping Name="CreditCard">
             <EntityTypeMapping TypeName="IGoDeliverModel.CreditCard">
               <MappingFragment StoreEntitySet="CreditCard">
                 <ScalarProperty Name="CreditCardID" ColumnName="CreditCardID" />
@@ -870,7 +1081,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DeliverOrderRows">
+          <EntitySetMapping Name="DeliverOrderRow">
             <EntityTypeMapping TypeName="IGoDeliverModel.DeliverOrderRow">
               <MappingFragment StoreEntitySet="DeliverOrderRow">
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
@@ -882,7 +1093,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DeliveryOrders">
+          <EntitySetMapping Name="DeliveryOrder">
             <EntityTypeMapping TypeName="IGoDeliverModel.DeliveryOrder">
               <MappingFragment StoreEntitySet="DeliveryOrder">
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
@@ -895,7 +1106,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Dishes">
+          <EntitySetMapping Name="Dish">
             <EntityTypeMapping TypeName="IGoDeliverModel.Dish">
               <MappingFragment StoreEntitySet="Dish">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -908,15 +1119,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DishCategories">
-            <EntityTypeMapping TypeName="IGoDeliverModel.DishCategory">
-              <MappingFragment StoreEntitySet="DishCategory">
+          <EntitySetMapping Name="DishPicture">
+            <EntityTypeMapping TypeName="IGoDeliverModel.DishPicture">
+              <MappingFragment StoreEntitySet="DishPicture">
                 <ScalarProperty Name="DishId" ColumnName="DishId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="PictureId" ColumnName="PictureId" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Geolocations">
+          <EntitySetMapping Name="Geolocation">
             <EntityTypeMapping TypeName="IGoDeliverModel.Geolocation">
               <MappingFragment StoreEntitySet="Geolocation">
                 <ScalarProperty Name="LocId" ColumnName="LocId" />
@@ -929,7 +1141,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Payments">
+          <EntitySetMapping Name="Payment">
             <EntityTypeMapping TypeName="IGoDeliverModel.Payment">
               <MappingFragment StoreEntitySet="Payment">
                 <ScalarProperty Name="Method" ColumnName="Method" />
@@ -939,7 +1151,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Promotions">
+          <EntitySetMapping Name="PictureOfDishes">
+            <EntityTypeMapping TypeName="IGoDeliverModel.PictureOfDishes">
+              <MappingFragment StoreEntitySet="PictureOfDishes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PictureOfRestaurants">
+            <EntityTypeMapping TypeName="IGoDeliverModel.PictureOfRestaurants">
+              <MappingFragment StoreEntitySet="PictureOfRestaurants">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Thumbnail" ColumnName="Thumbnail" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promotion">
             <EntityTypeMapping TypeName="IGoDeliverModel.Promotion">
               <MappingFragment StoreEntitySet="Promotion">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -953,7 +1183,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Restaurants">
+          <EntitySetMapping Name="Restaurant">
             <EntityTypeMapping TypeName="IGoDeliverModel.Restaurant">
               <MappingFragment StoreEntitySet="Restaurant">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -965,7 +1195,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="StateProvinces">
+          <EntitySetMapping Name="RestaurantPicture">
+            <EntityTypeMapping TypeName="IGoDeliverModel.RestaurantPicture">
+              <MappingFragment StoreEntitySet="RestaurantPicture">
+                <ScalarProperty Name="RestaurantId" ColumnName="RestaurantId" />
+                <ScalarProperty Name="PictureId" ColumnName="PictureId" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StateProvince">
             <EntityTypeMapping TypeName="IGoDeliverModel.StateProvince">
               <MappingFragment StoreEntitySet="StateProvince">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -975,7 +1214,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Suburbs">
+          <EntitySetMapping Name="Suburb">
             <EntityTypeMapping TypeName="IGoDeliverModel.Suburb">
               <MappingFragment StoreEntitySet="Suburb">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -985,7 +1224,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserProfiles">
+          <EntitySetMapping Name="UserProfile">
             <EntityTypeMapping TypeName="IGoDeliverModel.UserProfile">
               <MappingFragment StoreEntitySet="UserProfile">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -1039,6 +1278,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="DishCategory" TypeName="IGoDeliverModel.DishCategory" StoreEntitySet="DishCategory">
+            <EndProperty Name="Category">
+              <ScalarProperty Name="Id" ColumnName="CategoryId" />
+            </EndProperty>
+            <EndProperty Name="Dish">
+              <ScalarProperty Name="Id" ColumnName="DishId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1053,7 +1300,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

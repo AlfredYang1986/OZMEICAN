@@ -590,6 +590,13 @@ tr.pager td {
     padding: 0 0.25em 0 0;
 }
 
+.rtBtn_active {
+    background-color: red;
+}
+
+.dishBtn_active {
+    background-color: blue;
+}
 
 /********************
 *   Mobile Styles   *

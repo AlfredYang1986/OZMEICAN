@@ -16,7 +16,7 @@ namespace OZMeiCan.Entity
     {
         public CreditCard()
         {
-            this.UserProfiles = new HashSet<UserProfile>();
+            this.UserProfile = new HashSet<UserProfile>();
         }
     
         public int CreditCardID { get; set; }
@@ -25,6 +25,6 @@ namespace OZMeiCan.Entity
         public byte ExpMonth { get; set; }
         public short ExpYear { get; set; }
     
-        public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        public virtual ICollection<UserProfile> UserProfile { get; set; }
     }
 }

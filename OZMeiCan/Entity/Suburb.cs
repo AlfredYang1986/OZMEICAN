@@ -16,7 +16,7 @@ namespace OZMeiCan.Entity
     {
         public Suburb()
         {
-            this.Geolocations = new HashSet<Geolocation>();
+            this.Geolocation = new HashSet<Geolocation>();
         }
     
         public int Id { get; set; }
@@ -24,7 +24,7 @@ namespace OZMeiCan.Entity
         public int StateProvince { get; set; }
         public Nullable<int> PostalCode { get; set; }
     
-        public virtual ICollection<Geolocation> Geolocations { get; set; }
+        public virtual ICollection<Geolocation> Geolocation { get; set; }
         public virtual StateProvince StateProvince1 { get; set; }
     }
 }

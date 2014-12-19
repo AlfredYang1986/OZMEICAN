@@ -210,7 +210,7 @@
     <Compile Include="Entity\Dish.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\DishCategory.cs">
+    <Compile Include="Entity\DishPicture.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Geolocation.cs">
@@ -234,10 +234,19 @@
     <Compile Include="Entity\Payment.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\PictureOfDishes.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\PictureOfRestaurants.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Promotion.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Restaurant.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\RestaurantPicture.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\StateProvince.cs">
@@ -321,6 +330,11 @@
     <Content Include="Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <EntityDeploy Include="Entity\IGoDeliver.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>IGoDeliver.Designer.cs</LastGenOutput>
@@ -338,15 +352,11 @@
       <DependentUpon>IGoDeliver.edmx</DependentUpon>
       <LastGenOutput>IGoDeliver.cs</LastGenOutput>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\dev.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Images\icons\icon_SETTING.png" />
     <Content Include="Images\icons\icon_USER.png" />
+    <Content Include="Images\icons\image_DISH.png" />
     <Content Include="Images\icons\tag_BF.png" />
     <Content Include="Images\icons\tag_BF_colour.png" />
     <Content Include="Images\icons\tag_DINNER.png" />
@@ -427,6 +437,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PayPalComponent\PayPalComponent.csproj">
+      <Project>{7239e9ae-9fb3-48b9-a36e-e23b97d4ac80}</Project>
+      <Name>PayPalComponent</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

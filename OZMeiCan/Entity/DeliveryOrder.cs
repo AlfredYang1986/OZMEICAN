@@ -16,8 +16,8 @@ namespace OZMeiCan.Entity
     {
         public DeliveryOrder()
         {
-            this.DeliverOrderRows = new HashSet<DeliverOrderRow>();
-            this.Payments = new HashSet<Payment>();
+            this.DeliverOrderRow = new HashSet<DeliverOrderRow>();
+            this.Payment = new HashSet<Payment>();
         }
     
         public int OrderId { get; set; }
@@ -28,8 +28,8 @@ namespace OZMeiCan.Entity
         public string OrderRef { get; set; }
         public double DeliveryCost { get; set; }
     
-        public virtual ICollection<DeliverOrderRow> DeliverOrderRows { get; set; }
+        public virtual ICollection<DeliverOrderRow> DeliverOrderRow { get; set; }
         public virtual Promotion Promotion { get; set; }
-        public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<Payment> Payment { get; set; }
     }
 }

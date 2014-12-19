@@ -12,11 +12,13 @@ namespace OZMeiCan.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class DishCategory
+    public partial class RestaurantPicture
     {
-        public int DishId { get; set; }
-        public int CategoryId { get; set; }
+        public int RestaurantId { get; set; }
+        public int PictureId { get; set; }
+        public bool IsDefault { get; set; }
     
-        public virtual Category Category { get; set; }
+        public virtual PictureOfRestaurants PictureOfRestaurants { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
     }
 }

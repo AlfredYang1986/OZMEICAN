@@ -16,7 +16,7 @@ namespace OZMeiCan.Entity
     {
         public UserProfile()
         {
-            this.Payments = new HashSet<Payment>();
+            this.Payment = new HashSet<Payment>();
         }
     
         public int UserId { get; set; }
@@ -28,6 +28,6 @@ namespace OZMeiCan.Entity
     
         public virtual CreditCard CreditCard { get; set; }
         public virtual Geolocation Geolocation { get; set; }
-        public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<Payment> Payment { get; set; }
     }
 }

@@ -12,18 +12,17 @@ namespace OZMeiCan.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class StateProvince
+    public partial class PictureOfDishes
     {
-        public StateProvince()
+        public PictureOfDishes()
         {
-            this.Suburb = new HashSet<Suburb>();
+            this.DishPicture = new HashSet<DishPicture>();
         }
     
         public int Id { get; set; }
-        public string Code { get; set; }
-        public string CountryRegionCode { get; set; }
-        public string Name { get; set; }
+        public byte[] Thumbnail { get; set; }
+        public string Path { get; set; }
     
-        public virtual ICollection<Suburb> Suburb { get; set; }
+        public virtual ICollection<DishPicture> DishPicture { get; set; }
     }
 }

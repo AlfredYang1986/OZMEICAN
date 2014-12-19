@@ -14,6 +14,12 @@ namespace OZMeiCan.Entity
     
     public partial class Dish
     {
+        public Dish()
+        {
+            this.DishPicture = new HashSet<DishPicture>();
+            this.Category = new HashSet<Category>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
@@ -23,5 +29,7 @@ namespace OZMeiCan.Entity
         public int RestaurantId { get; set; }
     
         public virtual Restaurant Restaurant { get; set; }
+        public virtual ICollection<DishPicture> DishPicture { get; set; }
+        public virtual ICollection<Category> Category { get; set; }
     }
 }

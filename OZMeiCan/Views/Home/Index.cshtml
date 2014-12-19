@@ -14,6 +14,10 @@
     @*<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>*@
 }
 
+<script type="text/javascript">
+    var clientID = 'True' == '@Request.IsAuthenticated'? '@User.Identity.Name' : "Unknown";
+</script>
+
 <header style="height: 46px; width: 100%">
     <div id="login" style="width: 1024px; height: 100%; margin: 0px auto">
         @if (Request.IsAuthenticated)
@@ -26,14 +30,20 @@
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
             </text>
-            <button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="Left Align">
+
+            @*<button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="left align">
                 <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-            </button>
+            </button>*@
         }
         else
         {
-	        <img id="loginBtn" class="pull-right" style="width: 40px; height: 40px" src="~/Images/icons/icon_USER.png" />
-            <img id="registerBtn" class="pull-right" style="width: 40px; height: 40px" src="~/Images/icons/icon_SETTING.png" />
+            <div style="margin-right: 30px">
+	            <img id="loginBtn" class="pull-right" style="width: 40px; height: 40px" src="~/Images/icons/icon_USER.png" />
+                <img id="registerBtn" class="pull-right" style="width: 40px; height: 40px" src="~/Images/icons/icon_SETTING.png" />
+                <button id="shoppingBtn" type="button" class="btn pull-right" style="width: 40px; height: 40px" aria-label="left align">
+                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                </button>
+            </div>
         }
     </div>
 </header>
@@ -54,12 +64,14 @@
                 </tr>
             </table>
 
-            <span class="pull-right">
+            @*<span class="pull-right">
                 <p>运费</p>
-            </span>
+            </span>*@
             <span class="pull-right">
-                <p>总价</p>
+                <p>总价 : <span id="total-price">0.0</span></p>
             </span>
+
+            <button id="payBtn" class="pull-right btn btn-lg">Pay</button>
         </div>
     </div>
 </div>
@@ -86,7 +98,7 @@
                         </div>
                         <div id="cityNav" style="height: 40px; border: 1px solid #62BBFF">
                         </div>
-                        <div id="cities" class="listArea"> 
+                        <div id="cities" class="listArea" style="width : 100%; overflow : auto"> 
                         </div>
                         <div id="cityMap" style="display: none">
                         </div>
@@ -94,37 +106,12 @@
                 </div>
             </div>
         </div>
-        <div class="rightPane pull-right" style="width: 50%; height: 100%; border: 1px solid blue; position: relative">
-            <div class="rightCover" style="margin-right: 25px; height: 100%; border: 1px solid red">
-                <div class="rightPage" style="margin: 5px 20px 5px 0px; border: 1px solid #808080">
+        <div class="rightPane pull-right" style="width: 50%; height: 100%; position: relative">
+            <div class="rightCover" style="margin-right: 25px; height: 100%; border: 1px solid #808080; box-shadow:3px 0px 8px #808080, 0px -3px 8px #808080, 0px 3px 8px #808080">
+                <div class="rightPage" style="margin: 33px 33px 33px 30px;" @*border: 1px solid #62BBFF*@>
                     <div class="rightContent">
-                        <button class="btn btn-lg changePage" style="position: absolute; top: 20px; right: 50px; width: 50px; padding: 10px 8px">翻页</button>
-                        <div style="margin: 30px auto; width: 70%; height: 250px; border: 1px solid #808080">
-                            <img style="width: 100%; height: 100%" src="~/Images/naked.jpg" />
-                        </div>
-                        <div style="display: table; width: 60%; margin: 0 auto; border: 1px solid red">
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                            <div style="display: table-cell; text-align: center; vertical-align: middle">
-                                <p style="font-size: 1.5em">一些屁话</p>
-                            </div>
-                        </div>
+                        <button class="btn btn-lg changePage" style="position: absolute; top: 40px; right: 65px; width: 50px; padding: 10px 8px">翻页</button>
+                        <img style="position: absolute; bottom: 40px; right: 60px" src="~/Images/icons/image_DISH.png" />
                     </div>
                 </div>
             </div>
@@ -184,11 +171,14 @@
                 </div>
             </div>
         </div>
-        <div class="rightPane pull-left" style="width: 50%; height: 100%; border: 1px solid blue; overflow: auto">
-            <div style="margin: 30px auto; width: 70%; height: 250px; border: 1px solid #808080">
-                <img style="width: 100%; height: 100%" src="~/Images/naked.jpg" />
-            </div>
-            <div id="dishList" style="margin: 5px;">
+        <div class="rightPane pull-left" style="width: 50%; height: 100%; ">
+            <div class="rightCover" style="margin-right: 25px; height: 100%; border: 1px solid #808080; box-shadow:3px 0px 8px #808080, 0px -3px 8px #808080, 0px 3px 8px #808080">
+                <div class="rightPage" style="margin: 33px 33px 33px 30px; border: 1px solid #62BBFF; position: relative">
+                    <img class="pull-right" style="position: absolute; top: 0px; right: 0px" src="~/Images/icons/image_DISH.png" />
+               
+                    <div id="dishList" style="position: absolute; width: 98%; top: 205px; margin: 5px; overflow: auto">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -210,10 +200,12 @@
             $('.leftPage').css("height", (h_l - 70) + "px");
 
             var h_r = $('.rightCover').height();
-            $('.rightPage').css("height", (h_r - 10) + "px");
+            $('.rightPage').css("height", (h_r - 70) + "px");
 
             var city_p_h = $('.leftPage').height();
             $('.listArea').css("height", (city_p_h - 40 - 80) + "px");
+            $("#rtList").css("height", (city_p_h - 40 - 80 - 75) + "px");
+            $("#dishList").css("height", (city_p_h - 40 - 80 - 95) + "px");
 
             $('.changePage').click(function () {
                 var bHidden = $('#level0').css("display") == "none"
@@ -264,11 +256,51 @@
 
             $('#shoppingBtn').click(function () {
                 //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
+
+                //if (clientID == "Unknown")
+                //    alert("please login first");
+
+                var table = $('div.shoppingContent > table')
+                table.children().remove();
+
+                var tp = 0.0;
+                $('#total-price').html(tp);
+
+                $('<tr style="border: 1px solid #c6baba"> \
+                    <td style="border: 1px solid #c6baba">已点菜品</td> \
+                    <td style="border: 1px solid #c6baba">所属餐馆</td> \
+                    <td style="border: 1px solid #c6baba">价格</td> \
+                    <td style="border: 1px solid #c6baba">份数</td> \
+                    <td style="border: 1px solid #c6baba">积分</td> \
+                   </tr>').appendTo(table);
+
+                $.each($('.dishBtn_active'), function (index, item) {
+
+                    var tmp = $('<tr style="border: 1px solid #c6baba"> \
+                                    <td style="border: 1px solid #c6baba"></td> \
+                                    <td style="border: 1px solid #c6baba"></td> \
+                                    <td style="border: 1px solid #c6baba"></td> \
+                                    <td style="border: 1px solid #c6baba"></td> \
+                                    <td style="border: 1px solid #c6baba"></td> \
+                                </tr>');
+                    tmp.appendTo(table);
+
+                    var name = item.children[0].innerText;
+                    tmp.children()[0].innerText = name;
+                    var price = item.children[1].innerText;
+                    tmp.children()[2].innerText = price;
+
+                    tp += parseFloat(price)
+
+                    $('#total-price').html(tp);
+                });
+
                 $("#shoppingList").slideDown();
                 $("#content").slideUp();
             });
             $('#shoppingBack').click(function () {
                 //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
+
                 $("#shoppingList").slideUp();
                 $("#content").slideDown();
             });
@@ -279,6 +311,10 @@
 
             $('#loginBtn').click(function () {
                 location.href = '@Url.Action("Login", "Account")';
+            });
+
+            $('#payBtn').click(function () {
+                window.location.href = "/Home/PayPalPayment?price=1.0"// + $('#total-price').text();
             });
         });
 
