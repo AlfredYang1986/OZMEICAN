@@ -89,6 +89,16 @@ CityNav.prototype.getCitiesArrayByProvence = function (name) {
     return reVal;
 }
 
+CityNav.prototype.getCitiesArrayByProvence_2 = function (name) {
+    var reVal = new Array();
+    $.each(this.data, function (index, item) {
+        if (item.name == name) {
+            reVal = item.subs;
+        }
+    });
+    return reVal;
+}
+
 CityNav.prototype.getDistrectArrayByProAndCity = function (p, c) {
     var reVal = new Array();
     $.each(this.data, function (index, item) {
@@ -140,7 +150,8 @@ CityNav.prototype.listAllBtns = function () {
             if (pro.length == 0) {
                 self.createListButton(self.getProvencesArray(), 1);
             } else {
-                self.createListButton(self.getCitiesArrayByProvence(pro.html()), 2);
+                //self.createListButton(self.getCitiesArrayByProvence(pro.html()), 2);
+                self.createListButton(self.getCitiesArrayByProvence_2(pro.html()), 2);
             }
         } else {
             self.createListButton(self.getDistrectArrayByProAndCity(pro.html(), city.html()), 3);
@@ -183,9 +194,18 @@ CityNav.prototype.createListButton = function (array, level) {
     var self = this;
     
     $.each(array, function (index, item) {
-        var element = $("<button class='listBtn' style='width: 100%; height: 40px; background-color: white; border: 1px solid #62BBFF'></button>").appendTo($('#cities'));
-        element.html(item);
-        element.attr("data-level", level);
+        var element = null;
+        if (typeof (item) == 'string') {
+            element = $("<button class='listBtn' style='width: 100%; height: 40px; background-color: white; border: 1px solid #62BBFF'></button>").appendTo($('#cities'));
+            element.html(item);
+            element.attr("data-level", level);
+            element.attr("data-subID", -1);
+        } else {
+            element = $("<button class='listBtn' style='width: 100%; height: 40px; background-color: white; border: 1px solid #62BBFF'></button>").appendTo($('#cities'));
+            element.html(item.name);
+            element.attr("data-level", level);
+            element.attr("data-subID", item.subID);
+        }
 
         element.click(function () {
             var tmp = this;
@@ -195,6 +215,13 @@ CityNav.prototype.createListButton = function (array, level) {
                 self.createNavButton(tmp.textContent, level);
                 self.listAllBtns();
             } else {
+                if (typeof(item) == 'string') {
+                    rt.curSub = item;
+                    rt.curSubID = -1;
+                } else {
+                    rt.curSub = item.name;
+                    rt.curSubID = item.subID;
+                }
                 $('.changePage').first().click();
 
             //    /**

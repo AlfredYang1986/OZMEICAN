@@ -387,6 +387,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\MvcReportViewer.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\Order\Order.js" />
     <Content Include="Scripts\RtList\RtList.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

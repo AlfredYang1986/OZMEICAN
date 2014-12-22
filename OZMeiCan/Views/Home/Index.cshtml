@@ -190,10 +190,12 @@
     <script src="~/Content/Bootstrap/js/bootstrap.js"></script>
     <script src="~/Scripts/CityNav/CityNav.js"></script>
     <script src="~/Scripts/RtList/RtList.js"></script>
+    <script src="~/Scripts/Order/Order.js"></script>
 
     <script type="text/javascript">
         var nv = new CityNav(dataCallback);
         var rt = new RtList();
+        var od = new Orders();
 
         $(function () {
             var h_l = $('.leftCover').height();
@@ -274,9 +276,10 @@
                     <td style="border: 1px solid #c6baba">积分</td> \
                    </tr>').appendTo(table);
 
-                $.each($('.dishBtn_active'), function (index, item) {
+                $.each(od.getCurrentOrders(), function (index, item) {
 
                     var tmp = $('<tr style="border: 1px solid #c6baba"> \
+                                    <td style="border: 1px solid #c6baba"></td> \
                                     <td style="border: 1px solid #c6baba"></td> \
                                     <td style="border: 1px solid #c6baba"></td> \
                                     <td style="border: 1px solid #c6baba"></td> \
@@ -285,19 +288,40 @@
                                 </tr>');
                     tmp.appendTo(table);
 
-                    var name = item.children[0].innerText;
-                    tmp.children()[0].innerText = name;
-                    var price = item.children[1].innerText;
-                    tmp.children()[2].innerText = price;
+                    tmp.children()[0].innerText = item.dishName;
+                    tmp.children()[1].innerText = item.restName;
+                    tmp.children()[2].innerText = item.price;
+                    var plus = $('<button class="btn btn-sm plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>');
+                    plus.appendTo(tmp.children()[3]);
+                    var countSpan = $('<span class="dishCount"></span>');
+                    countSpan[0].innerText = item.count;
+                    countSpan.appendTo(tmp.children()[3]);
+                    var minus = $('<button class="btn btn-sm minusBtn"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>');
+                    minus.appendTo(tmp.children()[3]);
+                    var subTotal = item.subTotal;
+                    tmp.children()[4].innerText = subTotal;
 
-                    tp += parseFloat(price)
+                    tp += parseFloat(subTotal)
 
                     $('#total-price').html(tp);
+
+                    $(tmp.children()[3]).children().first().click(function () {
+                        od.addOrderDish(item.restName, item.dishName, item.price, item.dishID);
+                        var countSpanTmp = $(tmp.children()[3]).children('.dishCount');
+                        countSpanTmp.html(parseInt(countSpanTmp.html()) + 1);
+                    });
+
+                    $(tmp.children()[3]).children().last().click(function () {
+                        od.removeOrderDish(item.restName, item.dishName, item.price);
+                        var countSpanTmp = $(tmp.children()[3]).children('.dishCount');
+                        countSpanTmp.html(parseInt(countSpanTmp.html()) - 1);
+                    });
                 });
 
                 $("#shoppingList").slideDown();
                 $("#content").slideUp();
             });
+
             $('#shoppingBack').click(function () {
                 //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
 
@@ -314,7 +338,32 @@
             });
 
             $('#payBtn').click(function () {
-                window.location.href = "/Home/PayPalPayment?price=" + parseFloat($('#total-price').text());
+
+                var data = new Object;
+                data["orderData"] = od.orderJsonData();
+                data["total"] = $('#total-price').html();
+
+                $.ajax({
+                    url: '/Home/saveOrder',
+                    dataType: 'json',
+                    contentType: 'application/json, charset=utf-8',
+                    //data: JSON.stringify(data),
+                    data: data,
+                    cache: false,
+                    //beforeSend: function () {
+                    //    Loading();
+                    //},
+                    //complete: function () {
+                    //    hiddenLoading();
+                    //},
+                    success: function (data) {
+                        alert(data);
+                        window.location.href = "/Home/PayPalPayment?price=" + parseFloat($('#total-price').text());
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
             });
         });
 

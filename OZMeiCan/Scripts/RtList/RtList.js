@@ -1,6 +1,7 @@
 ﻿
 function RtList() {
     this.curSub = "";
+    this.curSubID = -1;
 }
 
 RtList.prototype.createRTContent = function () {
@@ -10,7 +11,7 @@ RtList.prototype.createRTContent = function () {
         url: '/Home/getRTContent',
         dataType: 'json',
         contentType: 'application/json, charset=utf-8',
-        data: { "cor": this.curSub },
+        data: { "cor": this.curSub, "subID": this.curSubID },
         cache: false,
         //beforeSend: function () {
         //    Loading();
@@ -73,7 +74,7 @@ RtList.prototype.createDishContent = function (name, cor) {
         //},
         success: function (data) {
             self.ds = eval(data);
-            self.initDishView();
+            self.initDishView(name);
         },
         error: function (xhr, status, error) {
             alert(error);
@@ -81,21 +82,53 @@ RtList.prototype.createDishContent = function (name, cor) {
     });
 }
 
-RtList.prototype.initDishView = function () {
+RtList.prototype.initDishView = function (restName) {
     var self = this;
 
     $('#dishList').children().remove();
 
     $.each(this.ds, function (index, item) {
         var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black; cursor: pointer'> \
-                            <p class='ele-title, pull-left' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
-                            <p class='ele-price, pull-right' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
+                            <p class='pull-left' data-ele='remove' style='display: none; vertical-align: middle;'> \
+                                <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> \
+                            </p> \
+                            <p class='pull-left' data-ele='rest' style='font-size: 1.0em; display: none; vertical-align: middle;'>0</p> \
+                            <p class='pull-left' data-ele='dishID' style='font-size: 1.0em; display: none; vertical-align: middle;'>0</p> \
+                            <p class='pull-left' data-ele='count' style='font-size: 1.0em; display: none; vertical-align: middle;'>0</p> \
+                            <p class='pull-left' data-ele='title' style='font-size: 1.5em; display: table-cell; vertical-ali0n: middle;'>123</p> \
+                            <p class='pull-right' data-ele='price' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
                          </div>").appendTo($('#dishList'));
-        element.children('p').first().html(item.name);
-        element.children('p').last().html(item.price);
+        element.children('p[data-ele=title]').first().html(item.name);
+        element.children('p[data-ele=price]').last().html(item.price);
+        element.children('p[data-ele=rest]').last().html(restName);
+        element.children('p[data-ele=dishID]').first().html(item.ID);
 
         element.click(function () {
-            $(this).addClass("dishBtn_active");
+            //$(this).addClass("dishBtn_active");
+
+            var tmp = $(this).children('p[data-ele=count]');
+            var tmpCount = parseInt(tmp.html()) + 1;
+            tmp.html(tmpCount);
+            tmp.css({ "display": "table-cell" });
+
+            $(this).children('p[data-ele=remove]').css({ "display": "table-cell" });
+
+            od.addOrderDish(restName, item.name, item.price, item.ID);
+        });
+
+        element.children('p[data-ele=remove]').click(function (event) {
+            var tmp = element.children('p[data-ele=count]');
+            var tmpCount = parseInt(tmp.html()) - 1;
+            tmp.html(tmpCount);
+
+            if (tmpCount == 0) {
+                tmp.css({ "display": "none" });
+                element.children('p[data-ele=remove]').css({ "display": "none" });
+            }
+
+            od.removeOrderDish(restName, item.name, item.price);
+
+            event.stopPropagation();
         });
     });
 }

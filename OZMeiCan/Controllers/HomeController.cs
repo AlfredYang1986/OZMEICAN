@@ -17,12 +17,17 @@ namespace OZMeiCan.Controllers
         /* cor is sub name                                                      */
         /*    now only list all the rest                                        */
         /************************************************************************/
-        public JsonResult getRTContent(String cor)
+        public JsonResult getRTContent(String cor, int subID)
         {
             JArray reVal = new JArray();
             using (var db = new IGoDeliverEntities())
             {
-                foreach (var rest in db.Restaurant)
+                var result = from r in db.Restaurant
+                             from s in db.Suburb
+                             where s.Id == subID && s.Geolocation.Contains(r.Geolocation)
+                             select r;
+
+                foreach (var rest in result)
                 {
                     dynamic tmp = new JObject();
                     tmp.name = rest.RestaurantName;
@@ -49,6 +54,8 @@ namespace OZMeiCan.Controllers
                     dynamic tmp = new JObject();
                     tmp.name = index.Name;
                     tmp.price = index.Price;
+                    tmp.ID = index.Id;
+
                     reVal.Add(tmp);
                 }
             }
@@ -74,6 +81,7 @@ namespace OZMeiCan.Controllers
                         dynamic sbu = new JObject();
                         sbu.shot = String.Format(@"{0}", sb.Name.First());
                         sbu.name = sb.Name;
+                        sbu.subID = sb.Id;
 
                         suburb.Add(sbu);
                     }
@@ -88,6 +96,39 @@ namespace OZMeiCan.Controllers
         public ActionResult Index()
         {
             return View("Index");
+        }
+
+        public JsonResult saveOrder(string orderData, double total) 
+        {
+            dynamic arr = JsonConvert.DeserializeObject(orderData) as JArray;
+
+            using (var db = new IGoDeliverEntities())
+            {
+                var order = new DeliveryOrder();
+                order.PriceTotal = total;
+                db.DeliveryOrder.Add(order);
+                //db.SaveChanges();
+
+                foreach (var iter in arr)
+                {
+                    var orderRow = new DeliverOrderRow();
+                    orderRow.OrderId = order.OrderId;
+                    orderRow.DishId = iter.dishID;
+                    orderRow.SubTotal = iter.subTotal;
+                    orderRow.DeliveryCost = 0.0;
+                    orderRow.Distance = 0.0;
+                    //orderRow.Count = iter.count;
+
+                    db.DeliverOrderRow.Add(orderRow);
+                }
+
+                order.OrderDateTime = System.DateTime.Now;
+                order.Status = @"A";
+
+                db.SaveChanges();
+            }
+            
+            return Json(JsonConvert.SerializeObject("success"), JsonRequestBehavior.AllowGet);
         }
 
         /************************************************************************/
