@@ -11,7 +11,7 @@
     <link href="~/Content/Bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
 
     @* <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=x3AY8bSPxj5PRaGy1OR2AP65"></script>*@
-    @*<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>*@
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
 }
 
 <script type="text/javascript">
@@ -48,7 +48,7 @@
     </div>
 </header>
 
-<div id="shoppingList" style="width: 1024px; height: 768px; margin: 0px auto; border: 1px solid red; display: none">
+<div id="shoppingList" style="width: 1024px; height: 768px; margin: 0px auto; display: none">
     <div style="text-align: center; vertical-align: middle">
         <div class="shoppingHeader">
             <button class="btn btn-lg" id="shoppingBack">GO BACK</button>
@@ -64,13 +64,51 @@
                 </tr>
             </table>
 
-            @*<span class="pull-right">
-                <p>运费</p>
-            </span>*@
-            <span class="pull-right">
-                <p>总价 : <span id="total-price">0.00</span></p>
-            </span>
+            <div class="pull-right" style="width: 70%">
+                <span class="pull-right">
+                    <p>菜总价 : <span id="total-price">0.00</span></p>
+                </span>
+                <br />
+                <br />
 
+                <p>地址: </p>
+                <div id="deliver-address" style="width: 80%; margin-top: 5px" >
+                    <label >Street No</label>
+                    <input id="st_no" type="text" \>
+                    <br />
+                    <label >Street </label>
+                    <input id="st" type="text" \>
+                    <br />
+                    <label >Subub </label>
+                    <input id="sb" type="text" \>
+                    <br />
+                    <label >State</label>
+                    <input id="sta" type="text" \>
+                    <br />
+                    <label >Postal Code</label>
+                    <input id="pc" type="text" \>
+                    <br />
+                </div>
+                <button id="deliver-change-loc">计算运费</button>
+            </div>
+            <br />
+            <br />
+            <br />
+            <span class="pull-right">
+                <p>距离: <span id="deliver-des"></span></p>
+            </span>
+            <br />
+            <br />
+            <span class="pull-right">
+                <p>运费: <span id="deliver-price">0.00</span></p>
+            </span>
+            <br />
+            <br />
+            <span class="pull-right">
+                <p>总价 : <span id="total">0.00</span></p>
+            </span>
+            <br />
+            <br />
             <button id="payBtn" class="pull-right btn btn-lg">Pay</button>
         </div>
     </div>
@@ -196,8 +234,25 @@
         var nv = new CityNav(dataCallback);
         var rt = new RtList();
         var od = new Orders();
+        var map = null;
+        var markers = [];
 
         $(function () {
+            var mapProp = {
+                center: new google.maps.LatLng(0, 0),
+                zoom: 11,
+                panControl: true,
+                zoomControl: true,
+                mapTypeControl: true,
+                scaleControl: true,
+                streetViewControl: true,
+                overviewMapControl: true,
+                rotateControl: true,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById("restMap"), mapProp);
+
             var h_l = $('.leftCover').height();
             $('.leftPage').css("height", (h_l - 70) + "px");
 
@@ -219,6 +274,9 @@
                     $('#level1').show();
                     rt.createRTContent();
                     rt.createDishContent();
+
+                    if ($('#restMap').visible)
+                        $('#mapBtn').click();
                 }
             });
 
@@ -240,20 +298,65 @@
                 $('#restMap').show();
                 $('#restMap').css({ "width": w + "px", "height": h + "px" });
 
-                var mapProp = {
-                    center: new google.maps.LatLng(51.508742, -0.120850),
-                    zoom: 7,
-                    panControl: true,
-                    zoomControl: true,
-                    mapTypeControl: true,
-                    scaleControl: true,
-                    streetViewControl: true,
-                    overviewMapControl: true,
-                    rotateControl: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(document.getElementById("restMap")
-                  , mapProp);
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': rt.country + ' ' + rt.curSub + ' ' + rt.postalCode }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        // do something with the geocoded result
+                        //
+                        var d = results[0].geometry.location.D;
+                        var k = results[0].geometry.location.k;
+
+                        for (index = 0; index < markers.length; ++index) {
+                            markers[index].setMap(null);
+                        }
+                        markers = [];
+                        map.setCenter(new google.maps.LatLng(k, d));
+
+                        /**
+                         *  add markers
+                         */
+                        $.each($('.restBtn'), function (index, item) {
+                            var loc = $(item).children('p[data-ele=loc]').html();
+                            var name = $(item).children('strong[data-ele=title]').html();
+                            geocoder.geocode({ 'address': loc }, function (results, status) {
+                                var d_tmp = results[0].geometry.location.D;
+                                var k_tmp = results[0].geometry.location.k;
+
+                                var pos = new google.maps.LatLng(k_tmp, d_tmp);
+                                // To add the marker to the map, use the 'map' property
+                                var marker = new google.maps.Marker({
+                                    position: pos,
+                                    map: map,
+                                    title: name
+                                });
+
+                                google.maps.event.addListener(marker, 'click', function () {
+                                    item.click();
+                                });
+
+                                var contentString = '<div class="mark-dlg" style="width:50px">' +
+                                                        '<div class="mark">' +
+                                                            name +
+                                                        '</div>' +
+                                                     '</div>';
+
+                                var infowindow = new google.maps.InfoWindow({
+                                    content: contentString
+                                });
+
+                                google.maps.event.addListener(marker, 'mouseover', function () {
+                                    infowindow.open(map, marker);
+                                });
+
+                                google.maps.event.addListener(marker, 'mouseout', function () {
+                                    infowindow.close();
+                                });
+
+                                markers.push(marker);
+                            });
+                        });
+                    }
+                });
             });
 
             $('#shoppingBtn').click(function () {
@@ -267,6 +370,8 @@
 
                 var tp = 0.0;
                 $('#total-price').html(tp);
+                $('#deliver-price').html(0.00);
+                $('#total').html(tp);
 
                 $('<tr style="border: 1px solid #c6baba"> \
                     <td style="border: 1px solid #c6baba">已点菜品</td> \
@@ -304,6 +409,7 @@
                     tp += parseFloat(subTotal)
 
                     $('#total-price').html(tp);
+                    $('#total').html(tp);
 
                     $(tmp.children()[3]).children().first().click(function () {
                         od.addOrderDish(item.restName, item.dishName, item.price, item.dishID);
@@ -312,6 +418,7 @@
 
                         var pp = parseFloat($('#total-price').html());
                         $('#total-price').html(pp + item.price);
+                        $('#total').html(pp + item.price + parseFloat($("#deliver-price").html()));
                     });
 
                     $(tmp.children()[3]).children().last().click(function () {
@@ -321,6 +428,7 @@
 
                         var pm = parseFloat($('#total-price').html());
                         $('#total-price').html(pm - item.price);
+                        $('#total').html(pp - item.price + parseFloat($("#deliver-price").html()));
                     });
                 });
 
@@ -343,11 +451,78 @@
                 location.href = '@Url.Action("Login", "Account")';
             });
 
+            $("#deliver-change-loc").click(function () {
+
+                var st_no = $('#st_no')[0].value;
+                var st = $('#st')[0].value;
+                var sb = $('#sb')[0].value;
+                var sta = $('#sta')[0].value;
+                var pc = $('#pc')[0].value;
+
+                if (st_no == "" || st == "" || sb == "" || sta == "" || pc == "") {
+                    alert("insert address first");
+                    return;
+                }
+
+                /**
+                 * calculate the deliver cost
+                 */
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': rt.country + ' ' + rt.curSub + ' ' + rt.postalCode }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+
+                        var d_rest = results[0].geometry.location.D;
+                        var k_rest = results[0].geometry.location.k;
+
+                        geocoder.geocode({ 'address': st_no + ' ' + st + ' ' + sb + ' ' + sta + ' ' + pc }, function (results_des, status_des) {
+                            if (status_des == google.maps.GeocoderStatus.OK) {
+
+                                var d_des = results_des[0].geometry.location.D;
+                                var k_des = results_des[0].geometry.location.k;
+
+                                var origin = new google.maps.LatLng(k_rest, d_rest);
+                                var destination = new google.maps.LatLng(k_des, d_des);
+
+                                var service = new google.maps.DistanceMatrixService();
+                                service.getDistanceMatrix(
+                                  {
+                                      origins: [origin],
+                                      destinations: [destination],
+                                      travelMode: google.maps.TravelMode.DRIVING,
+                                      unitSystem: google.maps.UnitSystem.METRIC,
+                                      durationInTraffic: false,
+                                      avoidHighways: false,
+                                      avoidTolls: false
+                                  }, function (response_final, status_final) {
+                                      if (status_final == google.maps.GeocoderStatus.OK) {
+                                          var distance = response_final.rows[0].elements[0].distance.text;
+                                          $("#deliver-des").html(distance);
+                                          var distance_num = parseFloat(distance.trim().split(" ")[0]) 
+                                          if (distance_num < 6) $("#deliver-price").html(distance_num * 2.2);
+                                          else if (distance_num >= 6 && distance < 15) $("#deliver-price").html(distance_num * 1.8);
+                                          else if (distance_num >= 15) $("#deliver-price").html(distance_num * 1.2);
+
+                                          $('#total').html(parseFloat($("#total-price").html()) + parseFloat($("#deliver-price").html()));
+
+                                      }
+                                  });
+                            }
+                        });
+                    }
+                });
+            });
+
             $('#payBtn').click(function () {
 
                 var data = new Object;
                 data["orderData"] = od.orderJsonData();
-                data["total"] = $('#total-price').html();
+                data["total"] = $('#total').html();
+                data["delCost"] = $('#deliver-price').html();
+                var destince = $("#deliver-des").html();
+                if (destince != "")
+                    data["dis"] = parseFloat(destince.trim().split(" ")[0]);
+                else
+                    data["dis"] = 0.0;
 
                 $.ajax({
                     url: '/Home/saveOrder',

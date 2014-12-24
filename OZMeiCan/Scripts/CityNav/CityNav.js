@@ -218,9 +218,11 @@ CityNav.prototype.createListButton = function (array, level) {
                 if (typeof(item) == 'string') {
                     rt.curSub = item;
                     rt.curSubID = -1;
+                    rt.postalCode = -1;
                 } else {
                     rt.curSub = item.name;
                     rt.curSubID = item.subID;
+                    rt.postalCode = item.postalCode;
                 }
                 $('.changePage').first().click();
 

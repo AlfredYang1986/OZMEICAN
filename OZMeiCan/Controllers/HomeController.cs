@@ -32,6 +32,8 @@ namespace OZMeiCan.Controllers
                     dynamic tmp = new JObject();
                     tmp.name = rest.RestaurantName;
                     tmp.dish = rest.Description;
+                    tmp.loc = String.Format("{0} {1} {2} {3}", rest.Geolocation.StreetNo, 
+                        rest.Geolocation.Street, rest.Geolocation.Suburb.Name, rest.Geolocation.Suburb.PostalCode);
 
                     reVal.Add(tmp);
                 }
@@ -105,6 +107,7 @@ namespace OZMeiCan.Controllers
                         dynamic sbu = new JObject();
                         sbu.shot = String.Format(@"{0}", sb.Name.First());
                         sbu.name = sb.Name;
+                        sbu.postalCode = sb.PostalCode;
                         sbu.subID = sb.Id;
 
                         suburb.Add(sbu);
@@ -122,7 +125,7 @@ namespace OZMeiCan.Controllers
             return View("Index");
         }
 
-        public JsonResult saveOrder(string orderData, double total) 
+        public JsonResult saveOrder(string orderData, double total, double delCost, double dis) 
         {
             dynamic arr = JsonConvert.DeserializeObject(orderData) as JArray;
 
@@ -139,8 +142,8 @@ namespace OZMeiCan.Controllers
                     orderRow.OrderId = order.OrderId;
                     orderRow.DishId = iter.dishID;
                     orderRow.SubTotal = iter.subTotal;
-                    orderRow.DeliveryCost = 0.0;
-                    orderRow.Distance = 0.0;
+                    orderRow.DeliveryCost = delCost;
+                    orderRow.Distance = dis;
                     //orderRow.Count = iter.count;
 
                     db.DeliverOrderRow.Add(orderRow);

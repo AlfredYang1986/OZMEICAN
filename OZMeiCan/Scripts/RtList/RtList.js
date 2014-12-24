@@ -4,6 +4,9 @@ function RtList() {
     this.curSubID = -1;
     this.ds = null;
     this.rt = null;
+
+    this.country = "Australia";
+    this.postalCode = 0;
 }
 
 RtList.prototype.createRTContent = function () {
@@ -38,11 +41,13 @@ RtList.prototype.initRTView = function () {
 
     $.each(this.rt, function (index, item) {
         var element = $("<div class='restBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black; cursor: pointer'> \
-                            <strong class='ele-title' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</strong> \
-                            <p class='ele-dis' style='display: table-cell; vertical-align: middle;'>123</p> \
+                            <strong data-ele='title' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</strong> \
+                            <p data-ele='dis' style='display: table-cell; vertical-align: middle;'>123</p> \
+                            <p data-ele='loc' style='display: none; vertical-align: middle;'>123</p> \
                          </div>").appendTo($('#rtList'));
-        element.children('strong').first().html(item.name);
-        element.children('p').first().html(item.dish);
+        element.children('strong[data-ele=title]').first().html(item.name);
+        element.children('p[data-ele=dis]').first().html(item.dish);
+        element.children('p[data-ele=loc]').first().html(item.loc);
 
         element.click(function () {
             self.createDishContent(item.name, "test");
