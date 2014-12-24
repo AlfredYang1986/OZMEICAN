@@ -255,6 +255,9 @@
     <Compile Include="Entity\Suburb.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\sysdiagrams.cs">
+      <DependentUpon>IGoDeliver.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\UserProfile.cs">
       <DependentUpon>IGoDeliver.tt</DependentUpon>
     </Compile>

@@ -11,7 +11,7 @@
     <link href="~/Content/Bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
 
     @* <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=x3AY8bSPxj5PRaGy1OR2AP65"></script>*@
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    @*<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>*@
 }
 
 <script type="text/javascript">
@@ -31,18 +31,18 @@
         }
             </text>
 
-            <button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="left align">
+            @*<button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="left align">
                 <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-            </button>
+            </button>*@
         }
         else
         {
             <div style="margin-right: 30px">
 	            <img id="loginBtn" class="pull-right" style="width: 40px; height: 40px" src="~/Images/icons/icon_USER.png" />
                 <img id="registerBtn" class="pull-right" style="width: 40px; height: 40px" src="~/Images/icons/icon_SETTING.png" />
-                @*<button id="shoppingBtn" type="button" class="btn pull-right" style="width: 40px; height: 40px" aria-label="left align">
+                <button id="shoppingBtn" type="button" class="btn pull-right" style="width: 40px; height: 40px" aria-label="left align">
                     <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-                </button>*@
+                </button>
             </div>
         }
     </div>
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div id="rtContainer" class="listArea">
-                            <div style="height: 40px; display: table">
+                            <div id="fastPay" style="height: 40px; display: table; border: 1px solid #62BBFF; width: 100%">
                                 <h2 style="margin: 5px; float: left">快捷订餐</h2>
                                 <p style="vertical-align: middle; display: table-cell">几秒完成订单</p>
                             </div>
@@ -309,12 +309,18 @@
                         od.addOrderDish(item.restName, item.dishName, item.price, item.dishID);
                         var countSpanTmp = $(tmp.children()[3]).children('.dishCount');
                         countSpanTmp.html(parseInt(countSpanTmp.html()) + 1);
+
+                        var pp = parseFloat($('#total-price').html());
+                        $('#total-price').html(pp + item.price);
                     });
 
                     $(tmp.children()[3]).children().last().click(function () {
                         od.removeOrderDish(item.restName, item.dishName, item.price);
                         var countSpanTmp = $(tmp.children()[3]).children('.dishCount');
                         countSpanTmp.html(parseInt(countSpanTmp.html()) - 1);
+
+                        var pm = parseFloat($('#total-price').html());
+                        $('#total-price').html(pm - item.price);
                     });
                 });
 
@@ -324,7 +330,7 @@
 
             $('#shoppingBack').click(function () {
                 //$('#shoppingList').css({ "width": "1024px", "height": "768px", "margin": "0 auto" });
-
+                od.resetOrderCount();
                 $("#shoppingList").slideUp();
                 $("#content").slideDown();
             });
@@ -359,6 +365,35 @@
                     success: function (data) {
                         alert(data);
                         window.location.href = "/Home/PayPalPayment?price=" + parseFloat($('#total-price').text());
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            });
+
+            $("#fastPay").click(function () {
+
+                if ($(this).hasClass("rtBtn_active"))
+                    $(this).removeClass("rtBtn_active");
+                else 
+                    $(this).addClass("rtBtn_active");
+
+                $.ajax({
+                    url: '/Home/getFastPayDishContent',
+                    dataType: 'json',
+                    contentType: 'application/json, charset=utf-8',
+                    cache: false,
+                    //beforeSend: function () {
+                    //    Loading();
+                    //},
+                    //complete: function () {
+                    //    hiddenLoading();
+                    //},
+                    success: function (data) {
+                        $('#dishList').children().remove();
+                        rt.ds = eval(data);
+                        rt.initDishView();
                     },
                     error: function (xhr, status, error) {
                         alert(error);

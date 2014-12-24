@@ -40,6 +40,7 @@ namespace OZMeiCan.Entity
         public DbSet<RestaurantPicture> RestaurantPicture { get; set; }
         public DbSet<StateProvince> StateProvince { get; set; }
         public DbSet<Suburb> Suburb { get; set; }
+        public DbSet<sysdiagrams> sysdiagrams { get; set; }
         public DbSet<UserProfile> UserProfile { get; set; }
         public DbSet<webpages_Membership> webpages_Membership { get; set; }
         public DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }

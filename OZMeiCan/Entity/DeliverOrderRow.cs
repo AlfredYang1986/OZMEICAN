@@ -22,6 +22,7 @@ namespace OZMeiCan.Entity
         public double DeliveryCost { get; set; }
     
         public virtual DeliveryOrder DeliveryOrder { get; set; }
+        public virtual Dish Dish { get; set; }
         public virtual Promotion Promotion { get; set; }
     }
 }

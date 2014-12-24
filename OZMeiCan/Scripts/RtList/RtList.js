@@ -2,6 +2,8 @@
 function RtList() {
     this.curSub = "";
     this.curSubID = -1;
+    this.ds = null;
+    this.rt = null;
 }
 
 RtList.prototype.createRTContent = function () {
@@ -82,13 +84,8 @@ RtList.prototype.createDishContent = function (name, cor) {
     });
 }
 
-RtList.prototype.initDishView = function (restName) {
-    var self = this;
-
-    $('#dishList').children().remove();
-
-    $.each(this.ds, function (index, item) {
-        var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black; cursor: pointer'> \
+RtList.prototype.dishElementView = function (index, item) {
+    var element = $("<div class='dishBtn' style='display: table; width: 100%; height: 60px; border: 1px solid black; cursor: pointer'> \
                             <p class='pull-left' data-ele='remove' style='display: none; vertical-align: middle;'> \
                                 <span class='glyphicon glyphicon-remove' aria-hidden='true'></span> \
                             </p> \
@@ -98,37 +95,42 @@ RtList.prototype.initDishView = function (restName) {
                             <p class='pull-left' data-ele='title' style='font-size: 1.5em; display: table-cell; vertical-ali0n: middle;'>123</p> \
                             <p class='pull-right' data-ele='price' style='font-size: 1.5em; display: table-cell; vertical-align: middle;'>123</p> \
                          </div>").appendTo($('#dishList'));
-        element.children('p[data-ele=title]').first().html(item.name);
-        element.children('p[data-ele=price]').last().html(item.price);
-        element.children('p[data-ele=rest]').last().html(restName);
-        element.children('p[data-ele=dishID]').first().html(item.ID);
+    element.children('p[data-ele=title]').first().html(item.name);
+    element.children('p[data-ele=price]').last().html(item.price);
+    element.children('p[data-ele=rest]').last().html(item.restName);
+    element.children('p[data-ele=dishID]').first().html(item.ID);
 
-        element.click(function () {
-            //$(this).addClass("dishBtn_active");
+    element.click(function () {
+        //$(this).addClass("dishBtn_active");
 
-            var tmp = $(this).children('p[data-ele=count]');
-            var tmpCount = parseInt(tmp.html()) + 1;
-            tmp.html(tmpCount);
-            tmp.css({ "display": "table-cell" });
+        var tmp = $(this).children('p[data-ele=count]');
+        var tmpCount = parseInt(tmp.html()) + 1;
+        tmp.html(tmpCount);
+        tmp.css({ "display": "table-cell" });
 
-            $(this).children('p[data-ele=remove]').css({ "display": "table-cell" });
+        $(this).children('p[data-ele=remove]').css({ "display": "table-cell" });
 
-            od.addOrderDish(restName, item.name, item.price, item.ID);
-        });
-
-        element.children('p[data-ele=remove]').click(function (event) {
-            var tmp = element.children('p[data-ele=count]');
-            var tmpCount = parseInt(tmp.html()) - 1;
-            tmp.html(tmpCount);
-
-            if (tmpCount == 0) {
-                tmp.css({ "display": "none" });
-                element.children('p[data-ele=remove]').css({ "display": "none" });
-            }
-
-            od.removeOrderDish(restName, item.name, item.price);
-
-            event.stopPropagation();
-        });
+        od.addOrderDish(item.restName, item.name, item.price, item.ID);
     });
+
+    element.children('p[data-ele=remove]').click(function (event) {
+        var tmp = element.children('p[data-ele=count]');
+        var tmpCount = parseInt(tmp.html()) - 1;
+        tmp.html(tmpCount);
+
+        if (tmpCount == 0) {
+            tmp.css({ "display": "none" });
+            element.children('p[data-ele=remove]').css({ "display": "none" });
+        }
+
+        od.removeOrderDish(item.restName, item.name, item.price);
+
+        event.stopPropagation();
+    });
+}
+
+RtList.prototype.initDishView = function (restName) {
+    var self = this;
+    $('#dishList').children().remove();
+    $.each(this.ds, this.dishElementView);
 }

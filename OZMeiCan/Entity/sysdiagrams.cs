@@ -12,14 +12,12 @@ namespace OZMeiCan.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Payment
+    public partial class sysdiagrams
     {
-        public int Method { get; set; }
-        public double Amount { get; set; }
-        public int OrderId { get; set; }
-        public int UserId { get; set; }
-    
-        public virtual DeliveryOrder DeliveryOrder { get; set; }
-        public virtual UserProfile UserProfile { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

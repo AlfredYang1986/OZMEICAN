@@ -40,6 +40,29 @@ namespace OZMeiCan.Controllers
             return Json(JsonConvert.SerializeObject(reVal), JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult getFastPayDishContent()
+        {
+            JArray reVal = new JArray();
+            using (var db = new IGoDeliverEntities())
+            {
+                var result = from iter in db.Dish
+                             where iter.isRecommended.HasValue && iter.isRecommended.Value == true
+                             select iter;
+
+                foreach (var index in result)
+                {
+                    dynamic tmp = new JObject();
+                    tmp.name = index.Name;
+                    tmp.price = index.Price;
+                    tmp.ID = index.Id;
+                    tmp.restName = index.Restaurant.RestaurantName;
+
+                    reVal.Add(tmp);
+                }
+            }
+            return Json(JsonConvert.SerializeObject(reVal), JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult getDishContent(String name, String cor)
         {
             JArray reVal = new JArray();
@@ -55,6 +78,7 @@ namespace OZMeiCan.Controllers
                     tmp.name = index.Name;
                     tmp.price = index.Price;
                     tmp.ID = index.Id;
+                    tmp.restName = index.Restaurant.RestaurantName;
 
                     reVal.Add(tmp);
                 }

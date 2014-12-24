@@ -27,8 +27,11 @@ namespace OZMeiCan.Entity
         public Nullable<int> PromoId { get; set; }
         public string OrderRef { get; set; }
         public double DeliveryCost { get; set; }
+        public Nullable<int> LocId { get; set; }
+        public string ContactNo { get; set; }
     
         public virtual ICollection<DeliverOrderRow> DeliverOrderRow { get; set; }
+        public virtual Geolocation Geolocation { get; set; }
         public virtual Promotion Promotion { get; set; }
         public virtual ICollection<Payment> Payment { get; set; }
     }

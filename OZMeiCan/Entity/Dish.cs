@@ -16,6 +16,7 @@ namespace OZMeiCan.Entity
     {
         public Dish()
         {
+            this.DeliverOrderRow = new HashSet<DeliverOrderRow>();
             this.DishPicture = new HashSet<DishPicture>();
             this.Category = new HashSet<Category>();
         }
@@ -27,7 +28,9 @@ namespace OZMeiCan.Entity
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<int> Spiciness { get; set; }
         public int RestaurantId { get; set; }
+        public Nullable<bool> isRecommended { get; set; }
     
+        public virtual ICollection<DeliverOrderRow> DeliverOrderRow { get; set; }
         public virtual Restaurant Restaurant { get; set; }
         public virtual ICollection<DishPicture> DishPicture { get; set; }
         public virtual ICollection<Category> Category { get; set; }
