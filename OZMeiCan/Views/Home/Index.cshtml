@@ -24,11 +24,11 @@
         {
             <text>
             Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-        {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        }
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            }
             </text>
 
             <button id="shoppingBtn" type="button" class="btn btn-lg pull-right" aria-label="left align">
@@ -238,9 +238,20 @@
         var markers = [];
 
         $(function () {
+            var h_l = $('.leftCover').height();
+            $('.leftPage').css("height", (h_l - 70) + "px");
+
+            var h_r = $('.rightCover').height();
+            $('.rightPage').css("height", (h_r - 70) + "px");
+
+            var city_p_h = $('.leftPage').height();
+            $('.listArea').css("height", (city_p_h - 40 - 80) + "px");
+            $("#rtList").css("height", (city_p_h - 40 - 80 - 75) + "px");
+            $("#dishList").css("height", (city_p_h - 40 - 80 - 95) + "px");
+
             var mapProp = {
                 center: new google.maps.LatLng(0, 0),
-                zoom: 11,
+                zoom: 13,
                 panControl: true,
                 zoomControl: true,
                 mapTypeControl: true,
@@ -252,17 +263,6 @@
             };
 
             map = new google.maps.Map(document.getElementById("restMap"), mapProp);
-
-            var h_l = $('.leftCover').height();
-            $('.leftPage').css("height", (h_l - 70) + "px");
-
-            var h_r = $('.rightCover').height();
-            $('.rightPage').css("height", (h_r - 70) + "px");
-
-            var city_p_h = $('.leftPage').height();
-            $('.listArea').css("height", (city_p_h - 40 - 80) + "px");
-            $("#rtList").css("height", (city_p_h - 40 - 80 - 75) + "px");
-            $("#dishList").css("height", (city_p_h - 40 - 80 - 95) + "px");
 
             $('.changePage').click(function () {
                 var bHidden = $('#level0').css("display") == "none"
@@ -276,7 +276,7 @@
                     rt.createDishContent();
 
                     if ($('#restMap').visible)
-                        $('#mapBtn').click();
+                        $('#listBtn').click();
                 }
             });
 
@@ -292,11 +292,14 @@
              * level 1 show map
              */
             $('#mapBtn').click(function () {
+               
                 var w = $('#rtContainer').width();
                 var h = $('#rtContainer').height();
+                $('#restMap').css({ "width": w + "px", "height": h + "px" });
                 $('#rtContainer').hide();
                 $('#restMap').show();
-                $('#restMap').css({ "width": w + "px", "height": h + "px" });
+
+                google.maps.event.trigger(map, 'resize');
 
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode({ 'address': rt.country + ' ' + rt.curSub + ' ' + rt.postalCode }, function (results, status) {
@@ -497,9 +500,11 @@
                                       if (status_final == google.maps.GeocoderStatus.OK) {
                                           var distance = response_final.rows[0].elements[0].distance.text;
                                           $("#deliver-des").html(distance);
+
                                           var distance_num = parseFloat(distance.trim().split(" ")[0]) 
+
                                           if (distance_num < 6) $("#deliver-price").html(distance_num * 2.2);
-                                          else if (distance_num >= 6 && distance < 15) $("#deliver-price").html(distance_num * 1.8);
+                                          else if (distance_num >= 6 && distance_num < 15) $("#deliver-price").html(distance_num * 1.8);
                                           else if (distance_num >= 15) $("#deliver-price").html(distance_num * 1.2);
 
                                           $('#total').html(parseFloat($("#total-price").html()) + parseFloat($("#deliver-price").html()));
